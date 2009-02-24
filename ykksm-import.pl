@@ -40,12 +40,12 @@ sub usage {
     print "  Tool to import key data on the YKKSM-KEYPROV format.\n";
     print "\n";
     print "  DBI: Database identifier, see http://dbi.perl.org/\n";
-    print "       defaults to a MySQL database ykksm on localhost,.";
-    print "       i.e., DBI::mysql:ykksm.";
+    print "       defaults to a MySQL database ykksm on localhost,\n";
+    print "       i.e., DBI::mysql:ykksm.\n";
     print "\n";
-    print "  USER: Database username to use, defaults to empty string.";
+    print "  USER: Database username to use, defaults to empty string.\n";
     print "\n";
-    print "  PASSWD: Database password to use, defaults to empty string.";
+    print "  PASSWD: Database password to use, defaults to empty string.\n";
     print "\n";
     print "  CREATOR: Short string with creator info.\n";
     print "           Defaults to using the PGP signer key id, normally.\n";
