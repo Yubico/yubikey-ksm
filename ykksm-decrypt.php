@@ -31,7 +31,7 @@
 include 'ykksm-config.php';
 include 'ykksm-utils.php';
 
-openlog("ykksm", LOG_PID, LOG_AUTHPRIV)
+openlog("ykksm", LOG_PID, $logfacility)
   or die("ERR Syslog open error\n");
 
 $otp = $_REQUEST["otp"];
