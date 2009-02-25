@@ -97,6 +97,8 @@ while (<>) {
 }
 close TMPFILE;
 
+END { unlink $infilename; }
+
 # Get status
 open(GPGV, "gpg --status-fd 1 --output /dev/null < $infilename 2>&1 |")
     or die "Cannot launch gpg";
@@ -152,7 +154,6 @@ while (<GPGV>) {
 }
 print "\n";
 
-unlink $infilename;
 close GPGV;
 $dbh->disconnect();
 
