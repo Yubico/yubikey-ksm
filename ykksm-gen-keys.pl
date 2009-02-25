@@ -43,7 +43,7 @@ sub usage {
     print "Usage example:\n";
     print "\n";
     print "  ./ykksm-gen-keys.pl --urandom 1 10 |\n";
-    print "     gpg -a --encrypt -r 1D2F473E > keys.txt\n";
+    print "     gpg -a --sign --encrypt -r 1D2F473E > keys.txt\n";
     print "\n";
     exit 1;
 }
