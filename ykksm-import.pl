@@ -131,7 +131,7 @@ while (<GPGV>) {
     next if m:^#:;
     my ($serialNr, $publicName, $internalName, $aesKey,
 	$lockCode, $created, $accessed) =
-	  m%^([0-9]+),([cbdefghijklnrtuv]+),([0-9a-f]+),([0-9a-f]+),([0-9a-f]+),([T:0-9 -]*),([T:0-9 -]*),0%;
+	  m%^([0-9]+),([cbdefghijklnrtuv]+),([0-9a-f]+),([0-9a-f]+),([0-9a-f]+),([T:0-9 -]*),([T:0-9 -]*)%;
     if ($verbose) {
 	print "line: $_";
     }
