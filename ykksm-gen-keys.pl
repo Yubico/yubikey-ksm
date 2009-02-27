@@ -32,13 +32,18 @@ use strict;
 use POSIX qw(strftime);
 
 sub usage {
-    print "Usage: $0 [--verbose] [--help] [--urandom] START [END]\n";
+    print "Usage: ykksm-gen-keys.pl [--verbose] [--help]\n";
+    print "                         [--urandom] [--progflags PROGFLAGS] START [END]\n";
     print "\n";
     print "  Tool to generate keys on the YKKSM-KEYPROV format.\n";
     print "\n";
     print "  START: Decimal start point.\n";
     print "\n";
     print "  END:   Decimal end point, if absent START is used as END.\n";
+    print "\n";
+    print "  --urandom:   Use /dev/urandom instead of /dev/random as entropy source.\n";
+    print "\n";
+    print "  --progflags PROGFLAGS: Add a final personalization configuration string.\n";
     print "\n";
     print "Usage example:\n";
     print "\n";
@@ -54,6 +59,7 @@ if ($#ARGV==-1) {
 
 my $verbose = 0;
 my $device = "/dev/random";
+my $progflags;
 while ($ARGV[0] =~ m/^-(.*)/) {
     my $cmd = shift @ARGV;
     if (($cmd eq "-v") || ($cmd eq "--verbose")) {
@@ -62,6 +68,8 @@ while ($ARGV[0] =~ m/^-(.*)/) {
 	usage();
     } elsif ($cmd eq "--urandom") {
 	$device = "/dev/urandom";
+    } elsif ($cmd eq "--progflags") {
+	$progflags = "," . shift;
     }
 }
 
@@ -92,7 +100,7 @@ my $ctr;
 
 print "# ykksm 1\n";
 print "# start $start end $end device $device\n" if ($verbose);
-print "# serialnr,identity,internaluid,aeskey,lockpw,created,accessed,flags\n";
+print "# serialnr,identity,internaluid,aeskey,lockpw,created,accessed[,progflags]\n";
 
 $ctr = $start;
 while ($ctr <= $end) {
@@ -102,7 +110,7 @@ while ($ctr <= $end) {
     my $aeskey = gethexrand(16);
     my $lockpw = gethexrand(6);
     print "# hexctr $hexctr modhexctr $modhexctr\n" if ($verbose);
-    printf "$ctr,$modhexctr,$internaluid,$aeskey,$lockpw,$now,,0\n";
+    printf "$ctr,$modhexctr,$internaluid,$aeskey,$lockpw,$now,$progflags\n";
     $ctr++;
 }
 
