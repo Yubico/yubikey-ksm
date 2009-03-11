@@ -103,11 +103,11 @@ if (!$result) {
 # Mask out interesting fields
 
 $counter = substr($plaintext, 14, 2) . substr($plaintext, 12, 2);
-$tstamphi = substr($plaintext, 18, 2) . substr($plaintext, 16, 2);
-$tstamplo = substr($plaintext, 20, 2);
-$sessionuse = substr($plaintext, 22, 2);
+$low = substr($plaintext, 18, 2) . substr($plaintext, 16, 2);
+$high = substr($plaintext, 20, 2);
+$use = substr($plaintext, 22, 2);
 
-print "OK counter=$counter tstamphi=$tstamphi tstamplo=$tstamplo sessionuse=$sessionuse\n";
+print "OK counter=$counter high=$high low=$low use=$use\n";
 
 mysql_close()
   or syslog(LOG_ERR, "Database close error (otp $otp): " . mysql_error());
