@@ -79,18 +79,19 @@ $internalName = $row['internalName'];
 $ciphertext = modhex2hex($modhex_ciphertext);
 $plaintext = aes128ecb_decrypt($aesKey, $ciphertext);
 
-syslog(LOG_INFO, "OTP $otp OUT $plaintext")
-  or die("ERR Log error\n");
-
 if (!crc_is_good($plaintext)) {
-  syslog(LOG_ERR, "CRC error: $otp");
+  syslog(LOG_ERR, "CRC error: $otp: $plaintext");
   die("ERR Corrupt OTP\n");
  }
 
-if (strcmp(substr($plaintext, 0, 12), $internalName) != 0) {
-  syslog(LOG_ERR, "Internal name mismatch: $otp");
+$uid = substr($plaintext, 0, 12);
+if (strcmp($uid, $internalName) != 0) {
+  syslog(LOG_ERR, "UID error: $otp $plaintext: $uid vs $internalName");
   die("ERR Corrupt OTP\n");;
  }
+
+syslog(LOG_INFO, "OTP $otp OUT $plaintext")
+  or die("ERR Log error\n");
 
 # Mask out interesting fields
 
