@@ -92,14 +92,6 @@ if (strcmp(substr($plaintext, 0, 12), $internalName) != 0) {
   die("ERR Corrupt OTP\n");;
  }
 
-$sql = "UPDATE yubikeys SET accessed = NOW() " .
-       "WHERE publicName = '$id'";
-$result = mysql_query($sql);
-if (!$result) {
-  syslog(LOG_ERR, "Database update error: " . mysql_error());
-  die("ERR Database error\n");
- }
-
 # Mask out interesting fields
 
 $counter = substr($plaintext, 14, 2) . substr($plaintext, 12, 2);

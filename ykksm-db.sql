@@ -11,7 +11,6 @@ create table yubikeys (
 
   -- timestamps:
   created datetime not null,
-  accessed datetime,
 
   -- the data:
   internalName varchar(12) not null,
@@ -34,5 +33,5 @@ create table yubikeys (
 
 drop user ykksmreader;
 create user ykksmreader;
-grant select, update(accessed) on ykksm.yubikeys to 'ykksmreader'@'localhost';
+grant select on ykksm.yubikeys to 'ykksmreader'@'localhost';
 flush privileges;

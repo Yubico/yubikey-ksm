@@ -1,3 +1,0 @@
-- Do we really need the 'accessed' column?  It leads to database
-  writes, and it seems this information could be stored on the
-  validation server anyway.

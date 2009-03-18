@@ -117,9 +117,9 @@ die "Input not signed?" if !$signed_by;
 
 my $dbh = DBI->connect($db, $dbuser, $dbpasswd, {'RaiseError' => 1});
 my $inserth = $dbh->prepare_cached(qq{
-INSERT INTO yubikeys (creator, created, accessed, serialNr,
+INSERT INTO yubikeys (creator, created, serialNr,
                       publicName, internalName, aesKey, lockCode)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 });
 my $now = strftime "%Y-%m-%dT%H:%M:%S", localtime;
 
@@ -147,7 +147,7 @@ while (<GPGV>) {
     $created = $now if !$created;
     $accessed = "NULL" if !$accessed;
 
-    $inserth->execute($creator, $created, $accessed, $serialNr,
+    $inserth->execute($creator, $created, $serialNr,
 		      $publicName, $internalName,
 		      $aesKey, $lockCode)
 	or die "Database insert error: " . $dbh->errstr;
