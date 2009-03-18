@@ -99,7 +99,7 @@ $low = substr($plaintext, 18, 2) . substr($plaintext, 16, 2);
 $high = substr($plaintext, 20, 2);
 $use = substr($plaintext, 22, 2);
 
-print "OK counter=$counter high=$high low=$low use=$use\n";
+print "OK counter=$counter low=$low high=$high use=$use\n";
 
 mysql_close()
   or syslog(LOG_ERR, "Database close error (otp $otp): " . mysql_error());
