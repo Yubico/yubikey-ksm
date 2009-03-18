@@ -90,17 +90,18 @@ if (strcmp($uid, $internalName) != 0) {
   die("ERR Corrupt OTP\n");;
  }
 
-syslog(LOG_INFO, "OTP $otp OUT $plaintext")
-  or die("ERR Log error\n");
-
 # Mask out interesting fields
-
 $counter = substr($plaintext, 14, 2) . substr($plaintext, 12, 2);
 $low = substr($plaintext, 18, 2) . substr($plaintext, 16, 2);
 $high = substr($plaintext, 20, 2);
 $use = substr($plaintext, 22, 2);
 
-print "OK counter=$counter low=$low high=$high use=$use\n";
+$out = "OK counter=$counter low=$low high=$high use=$use";
+
+syslog(LOG_INFO, "SUCCESS OTP $otp PT $plaintext $out")
+  or die("ERR Log error\n");
+
+print "$out\n";
 
 mysql_close()
   or syslog(LOG_ERR, "Database close error (otp $otp): " . mysql_error());
