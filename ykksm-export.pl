@@ -79,7 +79,7 @@ if ($#ARGV>=0) {
 
 my $dbh = DBI->connect($db, $dbuser, $dbpasswd, {'RaiseError' => 1});
 my $sth = $dbh->prepare
-    ('SELECT serialNr, publicName, internalName, aesKey, lockCode, creator FROM yubikeys')
+    ('SELECT serialNr, publicName, internalName, aesKey, lockCode, created FROM yubikeys')
     or die "Couldn't prepare statement: " . $dbh->errstr;
 $sth->execute()
     or die "Couldn't execute statement: " . $sth->errstr;
@@ -98,7 +98,7 @@ while ($row = $sth->fetchrow_hashref()) {
     print $row->{'internalName'} . ",";
     print $row->{'aesKey'} . ",";
     print $row->{'lockCode'} . ",";
-    print $row->{'creator'} . ",\n";
+    print $row->{'created'} . ",\n";
 }
 
 if ($sth->rows == 0) {
