@@ -1,4 +1,4 @@
-drop database ykksm;
+-- drop database ykksm;
 create database ykksm;
 use ykksm;
 
@@ -31,7 +31,7 @@ create table yubikeys (
   -- and make sure it uses a key to find the column.
 );
 
-drop user ykksmreader;
+-- drop user ykksmreader;
 create user ykksmreader;
 grant select on ykksm.yubikeys to 'ykksmreader'@'localhost';
 flush privileges;
