@@ -79,15 +79,15 @@ $internalName = $row['internalName'];
 $ciphertext = modhex2hex($modhex_ciphertext);
 $plaintext = aes128ecb_decrypt($aesKey, $ciphertext);
 
-if (!crc_is_good($plaintext)) {
-  syslog(LOG_ERR, "CRC error: $otp: $plaintext");
-  die("ERR Corrupt OTP\n");
- }
-
 $uid = substr($plaintext, 0, 12);
 if (strcmp($uid, $internalName) != 0) {
   syslog(LOG_ERR, "UID error: $otp $plaintext: $uid vs $internalName");
   die("ERR Corrupt OTP\n");;
+ }
+
+if (!crc_is_good($plaintext)) {
+  syslog(LOG_ERR, "CRC error: $otp: $plaintext");
+  die("ERR Corrupt OTP\n");
  }
 
 # Mask out interesting fields
