@@ -61,5 +61,5 @@ release:
 	 -m "Tagging the $(VERSION) release of the $(PACKAGE) project."
 	googlecode_upload.py -s "OpenPGP signature for $(PACKAGE) $(VERSION)." \
 	 -p $(PROJECT) -u $(USER) $(PACKAGE)-$(VERSION).tgz.sig
-	googlecode_upload.py -s "yubikey-ksm $(VERSION)." \
+	googlecode_upload.py -s "$(PACKAGE) $(VERSION)." \
 	 -p $(PROJECT) -u $(USER) $(PACKAGE)-$(VERSION).tgz 
