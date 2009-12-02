@@ -48,31 +48,28 @@ if (!preg_match("/^([cbdefghijklnrtuv]{0,16})([cbdefghijklnrtuv]{32})$/",
 $id = $matches[1];
 $modhex_ciphertext = $matches[2];
 
-$dbconn = mysql_connect($dbhost, $dbuser, $dbpasswd);
-if (!$dbconn) {
-  syslog(LOG_ERR, "Database connect error: " . mysql_error());
+try {
+  $dbh = new PDO($db_dsn, $db_username, $db_password, $db_options);
+} catch (PDOException $e) {
+  syslog(LOG_ERR, "Database error: " . $e->getMessage());
   die("ERR Database error\n");
- }
-$db_selected = mysql_select_db($dbname);
-if (!$db_selected) {
-  syslog(LOG_ERR, "Database select error: " . mysql_error());
-  die("ERR Database error\n");
- }
+}
 
 $sql = "SELECT aesKey, internalName FROM yubikeys " .
        "WHERE publicName = '$id' AND active";
-$result = mysql_query($sql);
+$result = $dbh->query($sql);
 if (!$result) {
-  syslog(LOG_ERR, "Database query error: " . mysql_error());
+  syslog(LOG_ERR, "Database query error.  Query: " . $sql . " Error: " .
+	 print_r ($dbh->errorInfo (), true));
   die("ERR Database error\n");
- }
+}
 
-if (mysql_num_rows($result) != 1) {
+if ($result->rowCount() != 1) {
   syslog(LOG_INFO, "Unknown yubikey: " . $otp);
   die("ERR Unknown yubikey\n");
  }
 
-$row = mysql_fetch_assoc($result);
+$row = $result->fetch(PDO::FETCH_ASSOC);
 $aesKey = $row['aesKey'];
 $internalName = $row['internalName'];
 
@@ -103,7 +100,7 @@ syslog(LOG_INFO, "SUCCESS OTP $otp PT $plaintext $out")
 
 print "$out\n";
 
-mysql_close()
-  or syslog(LOG_ERR, "Database close error (otp $otp): " . mysql_error());
+# Close database connection.
+$dbh = null;
 
 ?>
