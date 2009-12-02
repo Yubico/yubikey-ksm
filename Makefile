@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-VERSION=1.0
+VERSION=1.1
 PACKAGE=yubikey-ksm
 CODE=ykksm-config.php ykksm-decrypt.php ykksm-gen-keys.pl		\
 	ykksm-upgrade.pl ykksm-db.sql ykksm-export.pl ykksm-import.pl	\
