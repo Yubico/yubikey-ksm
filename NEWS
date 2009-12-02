@@ -1,0 +1,7 @@
+* Version 1.1
+
+  * Use PHP PDO instead of hard coding use of MySQL database interface.
+
+* Version 1.0
+
+  * Initial release.
