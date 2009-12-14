@@ -41,7 +41,8 @@ sub usage {
     print "\n";
     print "  --database DBI: Database identifier, see http://dbi.perl.org/\n";
     print "                  defaults to a MySQL database ykksm on localhost,\n";
-    print "                  i.e., DBI::mysql:ykksm.\n";
+    print "                  i.e., dbi:mysql:ykksm.  For PostgreSQL on the local\n";
+    print "                  host you can use 'DBI:Pg:dbname=ykksm;host=127.0.0.1'.\n";
     print "\n";
     print "  --db-user USER: Database username to use, defaults to empty string.\n";
     print "\n";
@@ -105,7 +106,7 @@ open(GPGV, "gpg --status-fd 1 --output /dev/null < $infilename 2>&1 |")
 while (<GPGV>) {
     $verify_status .= $_;
     $encrypted_to = $1 if m,^\[GNUPG:\] ENC_TO ([0-9A-F]+) ,;
-    $signed_by = $1 if m,^\[GNUPG:\] VALIDSIG ([0-9A-F]+) ,;
+    $signed_by = $1 if m,^\[GNUPG:\] VALIDSIG [0-9A-F]+([0-9A-F]{8}) ,;
 }
 close GPGV;
 
