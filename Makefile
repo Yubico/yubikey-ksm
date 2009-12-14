@@ -59,7 +59,7 @@ install:
 	install -D ykksm-gen-keys.pl $(binprefix)/bin/ykksm-gen-keys
 	install -D ykksm-import.pl $(binprefix)/ykksm-import
 	install -D ykksm-export.pl $(binprefix)/ykksm-export
-	install -D ykksm-config.php $(etcprefix)/config.php
+	install -D -m 700 ykksm-config.php $(etcprefix)/config.php
 	install -D ykksm-db.sql $(docprefix)/ykksm-db.sql
 	install -D $(DOCS) $(docprefix)/
 
