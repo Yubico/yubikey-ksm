@@ -30,7 +30,7 @@ VERSION=1.1
 PACKAGE=yubikey-ksm
 CODE=ykksm-config.php ykksm-decrypt.php ykksm-gen-keys.pl		\
 	ykksm-upgrade.pl ykksm-db.sql ykksm-export.pl ykksm-import.pl	\
-	ykksm-utils.php
+	ykksm-utils.php .htaccess
 DOCS=doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/GenerateKeys.wiki doc/ImportKeysToKSM.wiki		\
 	doc/Installation.wiki doc/KeyProvisioningFormat.wiki
@@ -48,7 +48,7 @@ clean:
 	rm -f *~
 	rm -rf $(PACKAGE)-$(VERSION)
 
-etcprefix = /etc
+etcprefix = /etc/ykksm
 binprefix = /usr/bin
 phpprefix = /usr/share/ykksm
 docprefix = /usr/share/doc/ykksm
