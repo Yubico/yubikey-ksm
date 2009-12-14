@@ -48,6 +48,21 @@ clean:
 	rm -f *~
 	rm -rf $(PACKAGE)-$(VERSION)
 
+etcprefix = /etc
+binprefix = /usr/bin
+phpprefix = /usr/share/ykksm
+docprefix = /usr/share/doc/ykksm
+
+install:
+	install -D ykksm-decrypt.php $(phpprefix)/ykksm-decrypt.php
+	install -D ykksm-utils.php $(phpprefix)/ykksm-utils.php
+	install -D ykksm-gen-keys.pl $(binprefix)/bin/ykksm-gen-keys
+	install -D ykksm-import.pl $(binprefix)/ykksm-import
+	install -D ykksm-export.pl $(binprefix)/ykksm-export
+	install -D ykksm-config.php $(etcprefix)/config.php
+	install -D ykksm-db.sql $(docprefix)/ykksm-db.sql
+	install -D $(DOCS) $(docprefix)/
+
 PROJECT=yubikey-ksm
 USER=simon75j
 KEYID=B9156397
