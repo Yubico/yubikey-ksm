@@ -114,8 +114,8 @@ die "Input not signed?" if !$signed_by;
 
 my $dbh = DBI->connect($db, $dbuser, $dbpasswd, {'RaiseError' => 1});
 my $inserth = $dbh->prepare_cached(qq{
-INSERT INTO yubikeys (creator, created, serialNr,
-                      publicName, internalName, aesKey, lockCode)
+INSERT INTO yubikeys (creator, created, serialnr,
+                      publicname, internalname, aeskey, lockcode)
 VALUES (?, NOW(), 0, ?, ?, ?, '000000000000')
 })
     or die "Couldn't prepare statement: " . $dbh->errstr;
@@ -126,15 +126,15 @@ open(GPGV, "gpg < $infilename 2>/dev/null |")
     or die "Cannot launch gpg";
 while (<GPGV>) {
     next if m:^#:;
-    my ($publicName, $aesKey, $internalName) =
+    my ($publicname, $aeskey, $internalname) =
 	  m%^id ([cbdefghijklnrtuv]+) key ([0-9a-f]+) uid ([0-9a-f]+)%;
     print "line: $_";
-    print "\tpublicName $publicName internalName $internalName aesKey $aesKey eol\n";
+    print "\tpublicname $publicname internalname $internalname aeskey $aeskey eol\n";
 
-    my $rows_changed = $dbh->do(q{UPDATE yubikeys SET publicName = ? WHERE publicName = ?}, undef, ("old-" . $publicName, $publicName))
+    my $rows_changed = $dbh->do(q{UPDATE yubikeys SET publicname = ? WHERE publicname = ?}, undef, ("old-" . $publicname, $publicname))
 	or die "Cannot update database: " . $dbh->errstr;
     
-    $inserth->execute($creator, $publicName, $internalName, $aesKey)
+    $inserth->execute($creator, $publicname, $internalname, $aeskey)
 	or die "Database insert error: " . $dbh->errstr;
 }
 

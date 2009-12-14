@@ -118,8 +118,8 @@ die "Input not signed?" if !$signed_by;
 
 my $dbh = DBI->connect($db, $dbuser, $dbpasswd, {'RaiseError' => 1});
 my $inserth = $dbh->prepare_cached(qq{
-INSERT INTO yubikeys (creator, created, serialNr,
-                      publicName, internalName, aesKey, lockCode)
+INSERT INTO yubikeys (creator, created, serialnr,
+                      publicname, internalname, aeskey, lockcode)
 VALUES (?, ?, ?, ?, ?, ?, ?)
 });
 my $now = strftime "%Y-%m-%dT%H:%M:%S", localtime;
@@ -130,14 +130,14 @@ open(GPGV, "gpg < $infilename 2>/dev/null |")
     or die "Cannot launch gpg";
 while (<GPGV>) {
     next if m:^#:;
-    my ($serialNr, $publicName, $internalName, $aesKey,
-	$lockCode, $created, $accessed) =
+    my ($serialnr, $publicname, $internalname, $aeskey,
+	$lockcode, $created, $accessed) =
 	  m%^([0-9]+),([cbdefghijklnrtuv]+),([0-9a-f]+),([0-9a-f]+),([0-9a-f]+),([T:0-9 -]*),([T:0-9 -]*)%;
     if ($verbose) {
 	print "line: $_";
     }
-    print "\tserialnr $serialNr publicName $publicName " .
-	"internalName $internalName aesKey $aesKey lockCode $lockCode " .
+    print "\tserialnr $serialnr publicname $publicname " .
+	"internalname $internalname aeskey $aeskey lockcode $lockcode " .
 	"created $created accessed $accessed eol";
     if ($verbose) {
 	print "\n";
@@ -148,9 +148,9 @@ while (<GPGV>) {
     $created = $now if !$created;
     $accessed = "NULL" if !$accessed;
 
-    $inserth->execute($creator, $created, $serialNr,
-		      $publicName, $internalName,
-		      $aesKey, $lockCode)
+    $inserth->execute($creator, $created, $serialnr,
+		      $publicname, $internalname,
+		      $aeskey, $lockcode)
 	or die "Database insert error: " . $dbh->errstr;
 }
 print "\n";
