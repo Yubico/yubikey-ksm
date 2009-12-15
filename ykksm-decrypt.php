@@ -28,8 +28,8 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-include 'ykksm-config.php';
-include 'ykksm-utils.php';
+require_once 'ykksm-config.php';
+require_once 'ykksm-utils.php';
 
 openlog("ykksm", LOG_PID, $logfacility)
   or die("ERR Syslog open error\n");
