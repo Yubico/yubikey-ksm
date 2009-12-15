@@ -26,18 +26,19 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-VERSION=1.2
-PACKAGE=yubikey-ksm
-CODE=.htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
+VERSION = 1.2
+PACKAGE = yubikey-ksm
+CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export.pl ykksm-gen-keys.pl	\
 	ykksm-import.pl ykksm-upgrade.pl ykksm-utils.php
-DOCS=doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
+DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/GenerateKeys.wiki doc/GenerateKSMKey.wiki		\
 	doc/ImportKeysToKSM.wiki doc/Installation.wiki		\
 	doc/KeyProvisioningFormat.wiki doc/ServerHardening.wiki
 
 all:
-	@echo Use 'make install' or 'make symlink'.
+	@echo "Try 'make install' or 'make symlink'."
+	@echo "Docs: http://code.google.com/p/yubikey-ksm/wiki/Installation"
 	@exit 1
 
 # Installation rules.
@@ -69,9 +70,9 @@ symlink:
 
 # Maintainer rules.
 
-PROJECT=yubikey-ksm
-USER=simon75j
-KEYID=B9156397
+PROJECT = yubikey-ksm
+USER = simon75j
+KEYID = B9156397
 
 $(PACKAGE)-$(VERSION).tgz: $(FILES)
 	mkdir $(PACKAGE)-$(VERSION) $(PACKAGE)-$(VERSION)/doc
