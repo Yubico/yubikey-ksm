@@ -52,6 +52,7 @@ etcprefix = /etc/ykksm
 binprefix = /usr/bin
 phpprefix = /usr/share/ykksm
 docprefix = /usr/share/doc/ykksm
+wwwgroup = www-data
 
 install:
 	install -D ykksm-decrypt.php $(phpprefix)/ykksm-decrypt.php
@@ -59,7 +60,7 @@ install:
 	install -D ykksm-gen-keys.pl $(binprefix)/ykksm-gen-keys
 	install -D ykksm-import.pl $(binprefix)/ykksm-import
 	install -D ykksm-export.pl $(binprefix)/ykksm-export
-	install -D -m 700 ykksm-config.php $(etcprefix)/ykksm-config.php
+	install -D --backup --mode 640 --group $(wwwgroup) ykksm-config.php $(etcprefix)/ykksm-config.php
 	install -D ykksm-db.sql $(docprefix)/ykksm-db.sql
 	install -D $(DOCS) $(docprefix)/
 
