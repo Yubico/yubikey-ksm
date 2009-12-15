@@ -56,7 +56,7 @@ docprefix = /usr/share/doc/ykksm
 install:
 	install -D ykksm-decrypt.php $(phpprefix)/ykksm-decrypt.php
 	install -D ykksm-utils.php $(phpprefix)/ykksm-utils.php
-	install -D ykksm-gen-keys.pl $(binprefix)/bin/ykksm-gen-keys
+	install -D ykksm-gen-keys.pl $(binprefix)/ykksm-gen-keys
 	install -D ykksm-import.pl $(binprefix)/ykksm-import
 	install -D ykksm-export.pl $(binprefix)/ykksm-export
 	install -D -m 700 ykksm-config.php $(etcprefix)/config.php
