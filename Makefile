@@ -64,6 +64,13 @@ install:
 	install -D ykksm-db.sql $(docprefix)/ykksm-db.sql
 	install -D $(DOCS) $(docprefix)/
 
+wwwprefix = /var/www/wsapi
+
+symlink:
+	install -d $(wwwprefix)
+	ln -sf $(phpprefix)/.htaccess $(wwwprefix)/.htaccess
+	ln -sf $(phpprefix)/ykval-decrypt.php $(wwwprefix)/decrypt.php
+
 PROJECT=yubikey-ksm
 USER=simon75j
 KEYID=B9156397
