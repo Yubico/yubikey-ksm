@@ -71,7 +71,7 @@ wwwprefix = /var/www/wsapi
 symlink:
 	install -d $(wwwprefix)
 	ln -sf $(phpprefix)/.htaccess $(wwwprefix)/.htaccess
-	ln -sf $(phpprefix)/ykval-decrypt.php $(wwwprefix)/decrypt.php
+	ln -sf $(phpprefix)/ykksm-decrypt.php $(wwwprefix)/decrypt.php
 
 PROJECT=yubikey-ksm
 USER=simon75j
