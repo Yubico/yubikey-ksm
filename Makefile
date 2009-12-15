@@ -26,27 +26,21 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-VERSION=1.1
+VERSION=1.2
 PACKAGE=yubikey-ksm
-CODE=ykksm-config.php ykksm-decrypt.php ykksm-gen-keys.pl		\
-	ykksm-upgrade.pl ykksm-db.sql ykksm-export.pl ykksm-import.pl	\
-	ykksm-utils.php .htaccess
+CODE=.htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
+	ykksm-decrypt.php ykksm-export.pl ykksm-gen-keys.pl	\
+	ykksm-import.pl ykksm-upgrade.pl ykksm-utils.php
 DOCS=doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
-	doc/GenerateKeys.wiki doc/ImportKeysToKSM.wiki		\
-	doc/Installation.wiki doc/KeyProvisioningFormat.wiki
+	doc/GenerateKeys.wiki doc/GenerateKSMKey.wiki		\
+	doc/ImportKeysToKSM.wiki doc/Installation.wiki		\
+	doc/KeyProvisioningFormat.wiki doc/ServerHardening.wiki
 
-all: $(PACKAGE)-$(VERSION).tgz
+all:
+	@echo Use 'make install' or 'make symlink'.
+	@exit 1
 
-$(PACKAGE)-$(VERSION).tgz: $(FILES)
-	mkdir $(PACKAGE)-$(VERSION) $(PACKAGE)-$(VERSION)/doc
-	cp $(CODE) $(PACKAGE)-$(VERSION)/
-	cp $(DOCS) $(PACKAGE)-$(VERSION)/doc/
-	tar cfz $(PACKAGE)-$(VERSION).tgz $(PACKAGE)-$(VERSION)
-	rm -rf $(PACKAGE)-$(VERSION)
-
-clean:
-	rm -f *~
-	rm -rf $(PACKAGE)-$(VERSION)
+# Installation rules.
 
 etcprefix = /etc/ykksm
 binprefix = /usr/bin
@@ -73,11 +67,26 @@ symlink:
 	ln -sf $(phpprefix)/.htaccess $(wwwprefix)/.htaccess
 	ln -sf $(phpprefix)/ykksm-decrypt.php $(wwwprefix)/decrypt.php
 
+# Maintainer rules.
+
 PROJECT=yubikey-ksm
 USER=simon75j
 KEYID=B9156397
 
-release:
+$(PACKAGE)-$(VERSION).tgz: $(FILES)
+	mkdir $(PACKAGE)-$(VERSION) $(PACKAGE)-$(VERSION)/doc
+	cp $(CODE) $(PACKAGE)-$(VERSION)/
+	cp $(DOCS) $(PACKAGE)-$(VERSION)/doc/
+	tar cfz $(PACKAGE)-$(VERSION).tgz $(PACKAGE)-$(VERSION)
+	rm -rf $(PACKAGE)-$(VERSION)
+
+dist: $(PACKAGE)-$(VERSION).tgz
+
+clean:
+	rm -f *~
+	rm -rf $(PACKAGE)-$(VERSION)
+
+release: dist
 	make
 	gpg --detach-sign --default-key $(KEYID) $(PACKAGE)-$(VERSION).tgz
 	gpg --verify $(PACKAGE)-$(VERSION).tgz.sig
