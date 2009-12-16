@@ -30,7 +30,7 @@ VERSION = 1.2
 PACKAGE = yubikey-ksm
 CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export.pl ykksm-gen-keys.pl	\
-	ykksm-import.pl ykksm-upgrade.pl ykksm-utils.php
+	ykksm-import.pl ykksm-utils.php
 DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/GenerateKeys.wiki doc/GenerateKSMKey.wiki		\
 	doc/ImportKeysToKSM.wiki doc/Installation.wiki		\
