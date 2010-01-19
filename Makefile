@@ -1,5 +1,5 @@
 # Written by Simon Josefsson <simon@josefsson.org>.
-# Copyright (c) 2009 Yubico AB
+# Copyright (c) 2009, 2010 Yubico AB
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-VERSION = 1.2
+VERSION = 1.3rc
 PACKAGE = yubikey-ksm
 CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export.pl ykksm-gen-keys.pl	\
@@ -38,7 +38,7 @@ DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 
 all:
 	@echo "Try 'make install' or 'make symlink'."
-	@echo "Docs: http://code.google.com/p/yubikey-ksm/wiki/Installation"
+	@echo "Docs: http://code.google.com/p/$(PROJECT)/wiki/Installation"
 	@exit 1
 
 # Installation rules.
@@ -70,7 +70,7 @@ symlink:
 
 # Maintainer rules.
 
-PROJECT = yubikey-ksm
+PROJECT = $(PACKAGE)
 USER = simon75j
 KEYID = B9156397
 
