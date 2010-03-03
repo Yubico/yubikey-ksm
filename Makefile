@@ -30,7 +30,7 @@ VERSION = 1.3rc
 PACKAGE = yubikey-ksm
 CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export.pl ykksm-gen-keys.pl	\
-	ykksm-import.pl ykksm-utils.php
+	ykksm-import.pl ykksm-utils.php ykksm-checksum.pl
 DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/GenerateKeys.wiki doc/GenerateKSMKey.wiki		\
 	doc/ImportKeysToKSM.wiki doc/Installation.wiki		\
@@ -56,6 +56,7 @@ install:
 	install -D ykksm-gen-keys.pl $(binprefix)/ykksm-gen-keys
 	install -D ykksm-import.pl $(binprefix)/ykksm-import
 	install -D ykksm-export.pl $(binprefix)/ykksm-export
+	install -D ykksm-checksum.pl $(binprefix)/ykksm-checksum
 	install -D --backup --mode 640 --group $(wwwgroup) ykksm-config.php $(etcprefix)/ykksm-config.php
 	install -D ykksm-db.sql $(docprefix)/ykksm-db.sql
 	install -D Makefile $(docprefix)/ykksm.mk
