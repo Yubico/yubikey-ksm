@@ -80,8 +80,9 @@ if ($#ARGV>=0) {
 }
 
 my $dbh = DBI->connect($db, $dbuser, $dbpasswd, {'RaiseError' => 1});
-my $sth = $dbh->prepare
-    ('SELECT serialnr, publicname, internalname, aeskey FROM yubikeys')
+my $sth = $dbh->prepare ('SELECT serialnr, publicname, internalname, aeskey '.
+			 'FROM yubikeys '.
+			 'ORDER BY serialnr')
     or die "Couldn't prepare statement: " . $dbh->errstr;
 $sth->execute()
     or die "Couldn't execute statement: " . $sth->errstr;
