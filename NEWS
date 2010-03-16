@@ -1,11 +1,15 @@
-* Version 1.2
+* Version 1.3 released 2010-03-16
+
+  * Added ykksm-checksum tool.
+
+* Version 1.2 released 2009-12-15
 
   * Documentation and installation experience substantially improved.
 
-* Version 1.1
+* Version 1.1 released 2009-12-02
 
   * Use PHP PDO instead of hard coding use of MySQL database interface.
 
-* Version 1.0
+* Version 1.0 released 2009-11-19
 
   * Initial release.
