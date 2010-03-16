@@ -34,7 +34,8 @@ CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
 DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/GenerateKeys.wiki doc/GenerateKSMKey.wiki		\
 	doc/ImportKeysToKSM.wiki doc/Installation.wiki		\
-	doc/KeyProvisioningFormat.wiki doc/ServerHardening.wiki
+	doc/KeyProvisioningFormat.wiki doc/ServerHardening.wiki	\
+	doc/SyncMonitor.wiki
 
 all:
 	@echo "Try 'make install' or 'make symlink'."
