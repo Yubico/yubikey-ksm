@@ -26,7 +26,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-VERSION = 1.3
+VERSION = 1.5
 PACKAGE = yubikey-ksm
 CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export.pl ykksm-gen-keys.pl	\
@@ -73,7 +73,7 @@ symlink:
 # Maintainer rules.
 
 PROJECT = $(PACKAGE)
-USER = simon75j
+USER = simon@yubico.com
 KEYID = B9156397
 
 $(PACKAGE)-$(VERSION).tgz: $(FILES)
