@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # Written by Simon Josefsson <simon@josefsson.org>.
-# Copyright (c) 2009 Yubico AB
+# Copyright (c) 2009, 2010 Yubico AB
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,7 @@ while ($ARGV[0] =~ m/^-(.*)/) {
 }
 
 sub hex2modhex {
-    my $_ = shift;
+    $_ = shift;
     tr/0123456789abcdef/cbdefghijklnrtuv/;
     return $_;
 }
