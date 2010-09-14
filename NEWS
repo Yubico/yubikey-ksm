@@ -1,4 +1,4 @@
-* Version 1.4 unreleased
+* Version 1.4 released 2010-09-14
 
   * Don't use PDO rowCount, it is not portable.
     Issue #2 reported by arte42.ripe, see:
