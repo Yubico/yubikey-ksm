@@ -1,7 +1,7 @@
 <?php
 
 # Written by Simon Josefsson <simon@josefsson.org>.
-# Copyright (c) 2009 Yubico AB
+# Copyright (c) 2009, 2010 Yubico AB
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -64,14 +64,14 @@ if (!$result) {
   die("ERR Database error\n");
 }
 
-if ($result->rowCount() != 1) {
-  syslog(LOG_INFO, "Unknown yubikey: " . $otp);
-  die("ERR Unknown yubikey\n");
- }
-
 $row = $result->fetch(PDO::FETCH_ASSOC);
 $aeskey = $row['aeskey'];
 $internalname = $row['internalname'];
+
+if (!$aeskey) {
+  syslog(LOG_INFO, "Unknown yubikey: " . $otp);
+  die("ERR Unknown yubikey\n");
+ }
 
 $ciphertext = modhex2hex($modhex_ciphertext);
 $plaintext = aes128ecb_decrypt($aeskey, $ciphertext);

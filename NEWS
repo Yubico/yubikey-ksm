@@ -1,5 +1,9 @@
 * Version 1.4 unreleased
 
+  * Don't use PDO rowCount, it is not portable.
+    Issue #2 reported by arte42.ripe, see:
+    http://code.google.com/p/yubikey-ksm/issues/detail?id=2>.
+
   * Fixed perl warning in ykksm-gen-keys.
     Issue #3 reported by toddejohnson, see:
     http://code.google.com/p/yubikey-ksm/issues/detail?id=3>.
