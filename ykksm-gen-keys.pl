@@ -36,7 +36,10 @@ my $device = "/dev/random";
 
 sub usage {
     print "Usage: ykksm-gen-keys.pl [--verbose] [--help]\n";
-    print "                         [--urandom] [--progflags PROGFLAGS] START [END]\n";
+    print "                         [--urandom]\n";
+    print "                         [--progflags PROGFLAGS]\n";
+    print "                         [--pskc]\n";
+    print "                         START [END]\n";
     print "\n";
     print "  Tool to generate keys on the YKKSM-KEYPROV format.\n";
     print "\n";
@@ -96,9 +99,9 @@ if ($#ARGV==-1) {
 my $verbose = 0;
 my $pskc = 0;
 my $progflags;
-my $start;
-my $end;
-while ($ARGV[0]) {
+my $start = "";
+my $end = "";
+while (defined($ARGV[0])) {
     my $cmd = shift @ARGV;
     if (($cmd eq "-v") || ($cmd eq "--verbose")) {
 	$verbose = 1;
@@ -111,16 +114,16 @@ while ($ARGV[0]) {
     } elsif ($cmd eq "--pskc") {
 	$pskc = 1;
     } elsif ($cmd =~ m/^[0-9]+/) {
-	if (!$start) {
+	if ($start eq "") {
 	    $start = $cmd;
-	} elsif (!$end) {
+	} elsif ($end eq "") {
 	    $end = $cmd;
 	} else {
 	    die "Invalid extra argument: $cmd";
 	}
     }
 }
-
+die "Missing START parameter, try --help" if ($start eq "");
 $end = $start if (!$end);
 
 my $now = strftime "%Y-%m-%dT%H:%M:%S", localtime;
