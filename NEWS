@@ -1,5 +1,7 @@
 * Version 1.6 unreleased
 
+  * ykkgsm-gen-keys supports the PSKC YubiKey profile.
+
 * Version 1.5 released 2010-09-14
 
   * Brown paper bag release to update NEWS and Makefile before release.

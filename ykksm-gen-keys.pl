@@ -30,6 +30,9 @@
 
 use strict;
 use POSIX qw(strftime);
+use MIME::Base64;
+
+my $device = "/dev/random";
 
 sub usage {
     print "Usage: ykksm-gen-keys.pl [--verbose] [--help]\n";
@@ -53,14 +56,47 @@ sub usage {
     exit 1;
 }
 
+sub hex2modhex {
+    $_ = shift;
+    tr/0123456789abcdef/cbdefghijklnrtuv/;
+    return $_;
+}
+
+sub getrand {
+    my $cnt = shift;
+    my $buf;
+
+    open (FH, $device) or die "Cannot open $device for reading";
+    read (FH, $buf, $cnt) or die "Cannot read from $device";
+    close FH;
+
+    return $buf;
+}
+
+sub gethexrand {
+    my $cnt = shift;
+    my $buf = getrand ($cnt);
+    return lc(unpack("H*", $buf));
+}
+
+sub getb64rand {
+    my $cnt = shift;
+    my $buf = getrand ($cnt);
+    return encode_base64($buf, '');
+}
+
+# main
+
 if ($#ARGV==-1) {
     usage();
 }
 
 my $verbose = 0;
-my $device = "/dev/random";
+my $pskc = 1;
 my $progflags;
-while ($ARGV[0] =~ m/^-(.*)/) {
+my $start;
+my $end;
+while ($ARGV[0]) {
     my $cmd = shift @ARGV;
     if (($cmd eq "-v") || ($cmd eq "--verbose")) {
 	$verbose = 1;
@@ -70,48 +106,88 @@ while ($ARGV[0] =~ m/^-(.*)/) {
 	$device = "/dev/urandom";
     } elsif ($cmd eq "--progflags") {
 	$progflags = "," . shift;
+    } elsif ($cmd eq "--old-keyprov") {
+	$pskc = 0;
+    } elsif ($cmd =~ m/^[0-9]+/) {
+	if (!$start) {
+	    $start = $cmd;
+	} elsif (!$end) {
+	    $end = $cmd;
+	} else {
+	    die "Invalid extra argument: $cmd";
+	}
     }
 }
 
-sub hex2modhex {
-    $_ = shift;
-    tr/0123456789abcdef/cbdefghijklnrtuv/;
-    return $_;
-}
-
-sub gethexrand {
-    my $cnt = shift;
-    my $buf;
-
-    open (FH, $device) or die "Cannot open $device for reading";
-    read (FH, $buf, $cnt) or die "Cannot read from $device";
-    close FH;
-
-    return lc(unpack("H*", $buf));
-}
-
-# main
+$end = $start if (!$end);
 
 my $now = strftime "%Y-%m-%dT%H:%M:%S", localtime;
-
-my $start = shift @ARGV;
-my $end = shift @ARGV || $start;
+if ($pskc) {
+    $now .= 'Z';
+}
 my $ctr;
 
-print "# ykksm 1\n";
-print "# start $start end $end device $device\n" if ($verbose);
-print "# serialnr,identity,internaluid,aeskey,lockpw,created,accessed[,progflags]\n";
+if ($pskc) {
+    print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    print "<KeyContainer Version=\"1.0\"\n";
+    if ($start == $end) {
+	print "              Id=\"yk-$start-pskc\"\n";
+    } else {
+	print "              Id=\"yk-$start-to-$end-pskc\"\n";
+    }
+    print "              xmlns=\"urn:ietf:params:xml:ns:keyprov:pskc\">\n";
+} else {
+    print "# ykksm 1\n";
+    print "# start $start end $end device $device\n" if ($verbose);
+    print "# serialnr,identity,internaluid,aeskey,lockpw,created,accessed[,progflags]\n";
+}
 
 $ctr = $start;
 while ($ctr <= $end) {
     my $hexctr = sprintf "%012x", $ctr;
     my $modhexctr = hex2modhex($hexctr);
     my $internaluid = gethexrand(6);
-    my $aeskey = gethexrand(16);
+    my $aeskey = $pskc ? getb64rand(16) : gethexrand(16);
     my $lockpw = gethexrand(6);
-    print "# hexctr $hexctr modhexctr $modhexctr\n" if ($verbose);
-    printf "$ctr,$modhexctr,$internaluid,$aeskey,$lockpw,$now,$progflags\n";
+
+    if ($pskc) {
+	print "     <KeyPackage>\n";
+	print "       <DeviceInfo>\n";
+	print "         <Manufacturer>oath.UB</Manufacturer>\n";
+	print "         <SerialNo>$ctr</SerialNo>\n";
+	print "         <StartDate>$now</StartDate>\n";
+	print "       </DeviceInfo>\n";
+	print "       <CryptoModuleInfo>\n";
+	print "         <Id>1</Id>\n";
+	print "       </CryptoModuleInfo>\n";
+	print "       <Key Id=\"yk-key-$ctr-slot-1\"\n";
+	print "            Algorithm=\"http://www.yubico.com/#yubikey-aes\">\n";
+	print "         <Issuer>Yubico</Issuer>\n";
+	print "         <AlgorithmParameters>\n";
+	print "           <ResponseFormat Encoding=\"ALPHANUMERIC\" Length=\"44\"/>\n";
+	print "         </AlgorithmParameters>\n";
+	print "         <Data>\n";
+	print "           <Secret>\n";
+	print "             <PlainValue>\n";
+	print "               $aeskey\n";
+	print "             </PlainValue>\n";
+	print "           </Secret>\n";
+	print "         </Data>\n";
+	print "         <UserId>CN=$modhexctr, UID=$internaluid</UserId>\n";
+	print "       </Key>\n";
+	print "     </KeyPackage>\n";
+    } else {
+	print "# hexctr $hexctr modhexctr $modhexctr\n" if ($verbose);
+	printf "$ctr,$modhexctr,$internaluid,$aeskey,$lockpw,$now,$progflags\n";
+    }
+
     $ctr++;
+}
+
+if ($pskc) {
+    print "</KeyContainer>\n";
+} else {
+    print "# the end\n";
 }
 
 exit 0;
