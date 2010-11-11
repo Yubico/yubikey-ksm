@@ -48,6 +48,8 @@ sub usage {
     print "\n";
     print "  --progflags PROGFLAGS: Add a final personalization configuration string.\n";
     print "\n";
+    print "  --pskc: Output keys on the YubiKey PSKC format.\n";
+    print "\n";
     print "Usage example:\n";
     print "\n";
     print "  ./ykksm-gen-keys.pl --urandom 1 10 |\n";
@@ -92,7 +94,7 @@ if ($#ARGV==-1) {
 }
 
 my $verbose = 0;
-my $pskc = 1;
+my $pskc = 0;
 my $progflags;
 my $start;
 my $end;
@@ -106,8 +108,8 @@ while ($ARGV[0]) {
 	$device = "/dev/urandom";
     } elsif ($cmd eq "--progflags") {
 	$progflags = "," . shift;
-    } elsif ($cmd eq "--old-keyprov") {
-	$pskc = 0;
+    } elsif ($cmd eq "--pskc") {
+	$pskc = 1;
     } elsif ($cmd =~ m/^[0-9]+/) {
 	if (!$start) {
 	    $start = $cmd;
