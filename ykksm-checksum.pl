@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # Written by Simon Josefsson <simon@josefsson.org>.
-# Copyright (c) 2010 Yubico AB
+# Copyright (c) 2010, 2011 Yubico AB
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -82,7 +82,7 @@ if ($#ARGV>=0) {
 my $dbh = DBI->connect($db, $dbuser, $dbpasswd, {'RaiseError' => 1});
 my $sth = $dbh->prepare ('SELECT serialnr, publicname, internalname, aeskey '.
 			 'FROM yubikeys '.
-			 'ORDER BY publicname')
+			 'ORDER BY serialnr, publicname')
     or die "Couldn't prepare statement: " . $dbh->errstr;
 $sth->execute()
     or die "Couldn't execute statement: " . $sth->errstr;
