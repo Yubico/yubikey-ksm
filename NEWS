@@ -1,6 +1,8 @@
 * Version 1.6 unreleased
 
-  * ykkgsm-gen-keys supports the PSKC YubiKey profile.
+  * ykksm-gen-keys supports the PSKC YubiKey profile.
+
+  * ykksm-checksum sorts by serial number first.
 
 * Version 1.5 released 2010-09-14
 
