@@ -75,8 +75,6 @@ symlink:
 # Maintainer rules.
 
 PROJECT = $(PACKAGE)
-USER = simon@yubico.com
-KEYID = B9156397
 
 $(PACKAGE)-$(VERSION).tgz: $(FILES) $(MANS)
 	mkdir $(PACKAGE)-$(VERSION) $(PACKAGE)-$(VERSION)/doc
@@ -106,9 +104,16 @@ clean-man:
 	rm -f *.1
 
 release: dist
+	@if test -z "$(KEYID)"; then \
+		echo "Try this instead:"; \
+		echo "  make release KEYID=[PGPKEYID]"; \
+		echo "For example:"; \
+		echo "  make release KEYID=2117364A"; \
+		exit 1; \
+	fi
 	gpg --detach-sign --default-key $(KEYID) $(PACKAGE)-$(VERSION).tgz
 	gpg --verify $(PACKAGE)-$(VERSION).tgz.sig
 
-	git tag -s -v $(PACKAGE)-$(VERSION)
+	git tag -sm "$(PACKAGE)-$(VERSION)" $(PACKAGE)-$(VERSION)
 	git push
 	git push --tags
