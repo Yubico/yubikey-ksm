@@ -35,17 +35,13 @@ use MIME::Base64;
 my $device = "/dev/random";
 
 sub usage {
-    print "Usage: ykksm-gen-keys.pl [--verbose] [--help]\n";
-    print "                         [--urandom]\n";
-    print "                         [--progflags PROGFLAGS]\n";
-    print "                         [--pskc]\n";
-    print "                         START [END]\n";
+    print "Usage: ykksm-gen-keys [--verbose] [--help] [--urandom] [--progflags PROGFLAGS] [--pskc] START [END]\n";
     print "\n";
-    print "  Tool to generate keys on the YKKSM-KEYPROV format.\n";
+    print "Tool to generate keys on the YKKSM-KEYPROV format.\n";
     print "\n";
-    print "  START: Decimal start point.\n";
+    print "START: Decimal start point.\n";
     print "\n";
-    print "  END:   Decimal end point, if absent START is used as END.\n";
+    print "END:   Decimal end point, if absent START is used as END.\n";
     print "\n";
     print "  --urandom:   Use /dev/urandom instead of /dev/random as entropy source.\n";
     print "\n";
@@ -55,7 +51,7 @@ sub usage {
     print "\n";
     print "Usage example:\n";
     print "\n";
-    print "  ./ykksm-gen-keys.pl --urandom 1 10 |\n";
+    print "  ./ykksm-gen-keys --urandom 1 10 |\n";
     print "     gpg -a --sign --encrypt -r 1D2F473E > keys.txt\n";
     print "\n";
     exit 1;

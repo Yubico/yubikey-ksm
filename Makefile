@@ -29,13 +29,15 @@
 VERSION = 1.6
 PACKAGE = yubikey-ksm
 CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
-	ykksm-decrypt.php ykksm-export.pl ykksm-gen-keys.pl	\
-	ykksm-import.pl ykksm-utils.php ykksm-checksum.pl
+	ykksm-decrypt.php ykksm-export ykksm-gen-keys	\
+	ykksm-import ykksm-utils.php ykksm-checksum
 DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/GenerateKeys.wiki doc/GenerateKSMKey.wiki		\
 	doc/ImportKeysToKSM.wiki doc/Installation.wiki		\
 	doc/KeyProvisioningFormat.wiki doc/ServerHardening.wiki	\
 	doc/SyncMonitor.wiki
+MANS = ykksm-checksum.1 ykksm-export.1 ykksm-gen-keys.1		\
+	ykksm-import.1
 
 all:
 	@echo "Try 'make install' or 'make symlink'."
@@ -54,10 +56,10 @@ install:
 	install -D .htaccess $(phpprefix)/.htaccess
 	install -D ykksm-decrypt.php $(phpprefix)/ykksm-decrypt.php
 	install -D ykksm-utils.php $(phpprefix)/ykksm-utils.php
-	install -D ykksm-gen-keys.pl $(binprefix)/ykksm-gen-keys
-	install -D ykksm-import.pl $(binprefix)/ykksm-import
-	install -D ykksm-export.pl $(binprefix)/ykksm-export
-	install -D ykksm-checksum.pl $(binprefix)/ykksm-checksum
+	install -D ykksm-gen-keys $(binprefix)/ykksm-gen-keys
+	install -D ykksm-import $(binprefix)/ykksm-import
+	install -D ykksm-export $(binprefix)/ykksm-export
+	install -D ykksm-checksum $(binprefix)/ykksm-checksum
 	install -D --backup --mode 640 --group $(wwwgroup) ykksm-config.php $(etcprefix)/ykksm-config.php
 	install -D ykksm-db.sql $(docprefix)/ykksm-db.sql
 	install -D Makefile $(docprefix)/ykksm.mk
@@ -76,9 +78,10 @@ PROJECT = $(PACKAGE)
 USER = simon@yubico.com
 KEYID = B9156397
 
-$(PACKAGE)-$(VERSION).tgz: $(FILES)
+$(PACKAGE)-$(VERSION).tgz: $(FILES) $(MANS)
 	mkdir $(PACKAGE)-$(VERSION) $(PACKAGE)-$(VERSION)/doc
 	cp $(CODE) $(PACKAGE)-$(VERSION)/
+	cp $(MANS) $(PACKAGE)-$(VERSION)/
 	cp $(DOCS) $(PACKAGE)-$(VERSION)/doc/
 	tar cfz $(PACKAGE)-$(VERSION).tgz $(PACKAGE)-$(VERSION)
 	rm -rf $(PACKAGE)-$(VERSION)
@@ -88,6 +91,19 @@ dist: $(PACKAGE)-$(VERSION).tgz
 clean:
 	rm -f *~
 	rm -rf $(PACKAGE)-$(VERSION)
+
+NAME_ykksm-checksum = 'Print checksum of important database fields.  Useful for quickly determining whether several KSMs are in sync.'
+NAME_ykksm-export = 'Tool to export keys to the YKKSM-KEYPROV format.'
+NAME_ykksm-gen-keys = 'Tool to generate keys on the YKKSM-KEYPROV format.'
+NAME_ykksm-import = 'Tool to import key data on the YKKSM-KEYPROV format.'
+
+%.1: %
+	help2man -N --name=$(NAME_$*) --version-string=1 ./$* > $@
+
+man: $(MANS)
+
+clean-man:
+	rm -f *.1
 
 release: dist
 	gpg --detach-sign --default-key $(KEYID) $(PACKAGE)-$(VERSION).tgz

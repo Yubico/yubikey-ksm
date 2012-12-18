@@ -33,9 +33,7 @@ use DBI;
 use POSIX qw(strftime);
 
 sub usage {
-    print "Usage: $0 [--verbose] [--help]\n";
-    print "          [--database DBI] [--db-user USER] [--db-passwd PASSWD]\n";
-    print "          [--creator CREATOR]\n";
+    print "Usage: $0 [--verbose] [--help] [--database DBI] [--db-user USER] [--db-passwd PASSWD] [--creator CREATOR]\n";
     print "\n";
     print "Tool to import key data on the YKKSM-KEYPROV format.\n";
     print "\n";
@@ -54,7 +52,7 @@ sub usage {
     print "\n";
     print "Usage example:\n";
     print "\n";
-    print "  ./ykksm-import.pl < keys.txt\n";
+    print "  ./ykksm-import < keys.txt\n";
     print "\n";
     exit 1;
 }

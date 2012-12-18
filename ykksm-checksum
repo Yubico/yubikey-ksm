@@ -34,8 +34,7 @@ use POSIX qw(strftime);
 use Digest::SHA;
 
 sub usage {
-    print "Usage: $0 [--verbose] [--help]\n";
-    print "          [--database DBI] [--db-user USER] [--db-passwd PASSWD]\n";
+    print "Usage: $0 [--verbose] [--help] [--database DBI] [--db-user USER] [--db-passwd PASSWD]\n";
     print "\n";
     print "Print checksum of important database fields.  Useful for quickly\n";
     print "determining whether several KSMs are in sync.\n";
@@ -51,7 +50,7 @@ sub usage {
     print "\n";
     print "Usage example:\n";
     print "\n";
-    print "  ./ykksm-checksum.pl --database dbi:mysql:ykksm --db-user user --db-passwd pencil\n";
+    print "  ./ykksm-checksum --database dbi:mysql:ykksm --db-user user --db-passwd pencil\n";
     print "\n";
     exit 1;
 }
