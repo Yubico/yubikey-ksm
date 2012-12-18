@@ -31,7 +31,7 @@
 use strict;
 use DBI;
 use POSIX qw(strftime);
-use Digest::SHA1;
+use Digest::SHA;
 
 sub usage {
     print "Usage: $0 [--verbose] [--help]\n";
@@ -87,7 +87,7 @@ my $sth = $dbh->prepare ('SELECT serialnr, publicname, internalname, aeskey '.
 $sth->execute()
     or die "Couldn't execute statement: " . $sth->errstr;
 
-my $sha1 = Digest::SHA1->new;
+my $sha1 = Digest::SHA->new(1);
 
 my $row;
 while ($row = $sth->fetchrow_hashref()) {
