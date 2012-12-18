@@ -41,7 +41,7 @@ MANS = ykksm-checksum.1 ykksm-export.1 ykksm-gen-keys.1		\
 
 all:
 	@echo "Try 'make install' or 'make symlink'."
-	@echo "Docs: http://code.google.com/p/$(PROJECT)/wiki/Installation"
+	@echo "Docs: https://github.com/Yubico/$(PROJECT)/wiki/Installation"
 	@exit 1
 
 # Installation rules.

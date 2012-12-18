@@ -4,6 +4,12 @@
 
   * ykksm-checksum sorts by serial number first.
 
+  * Removed .pl extension from scripts.
+
+  * Added man pages.
+
+  * Removed ykksm-upgrade.
+
 * Version 1.5 released 2010-09-14
 
   * Brown paper bag release to update NEWS and Makefile before release.
