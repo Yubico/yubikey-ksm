@@ -7,7 +7,7 @@ This separation allows third parties to keep tight control of the AES keys for t
 
 Releases are available from:
 
-http://yubico.github.com/yubikey-ksm/releases
+http://yubico.github.com/yubikey-ksm/releases.html
 
 The YK-KSM was designed to work with the YubiKey validation server in PHP:
 
