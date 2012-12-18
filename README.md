@@ -9,4 +9,4 @@ This separation allows third parties to keep tight control of the AES keys for t
 
 The YK-KSM was designed to work with the YubiKey validation server in PHP:
 
-http://code.google.com/p/yubikey-val-server-php/
+https://github.com/Yubico/yubikey-val-server-php/
