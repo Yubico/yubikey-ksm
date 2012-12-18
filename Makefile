@@ -88,7 +88,7 @@ $(PACKAGE)-$(VERSION).tgz: $(FILES) $(MANS)
 
 dist: $(PACKAGE)-$(VERSION).tgz
 
-clean:
+clean: clean-man
 	rm -f *~
 	rm -rf $(PACKAGE)-$(VERSION)
 
