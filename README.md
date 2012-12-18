@@ -6,7 +6,17 @@ The YK-KSM is intended to be run on a locked-down server.
 This separation allows third parties to keep tight control of the AES keys for their YubiKeys, but at the same time allow external validation servers (e.g., Yubico's) to validate OTPs from these YubiKeys.
 
 
-
 The YK-KSM was designed to work with the YubiKey validation server in PHP:
 
 https://github.com/Yubico/yubikey-val-server-php/
+
+Documentation is in doc.
+
+If you've checked out the source tree and the doc/ dir is empty, do
+
+   $ git submodule init
+   $ git submodule update
+
+The documentation is also available online at
+
+    http://github.com/Yubico/yubikey-ksm/wiki
