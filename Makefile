@@ -53,17 +53,17 @@ docprefix = /usr/share/doc/ykksm
 wwwgroup = www-data
 
 install:
-	install -D .htaccess $(phpprefix)/.htaccess
-	install -D ykksm-decrypt.php $(phpprefix)/ykksm-decrypt.php
-	install -D ykksm-utils.php $(phpprefix)/ykksm-utils.php
-	install -D ykksm-gen-keys $(binprefix)/ykksm-gen-keys
-	install -D ykksm-import $(binprefix)/ykksm-import
-	install -D ykksm-export $(binprefix)/ykksm-export
-	install -D ykksm-checksum $(binprefix)/ykksm-checksum
-	install -D --backup --mode 640 --group $(wwwgroup) ykksm-config.php $(etcprefix)/ykksm-config.php
-	install -D ykksm-db.sql $(docprefix)/ykksm-db.sql
-	install -D Makefile $(docprefix)/ykksm.mk
-	install -D $(DOCS) $(docprefix)/
+	install -D --mode 640 .htaccess $(DESTDIR)$(phpprefix)/.htaccess
+	install -D --mode 640 ykksm-decrypt.php $(DESTDIR)$(phpprefix)/ykksm-decrypt.php
+	install -D --mode 640 ykksm-utils.php $(DESTDIR)$(phpprefix)/ykksm-utils.php
+	install -D ykksm-gen-keys $(DESTDIR)$(binprefix)/ykksm-gen-keys
+	install -D ykksm-import $(DESTDIR)$(binprefix)/ykksm-import
+	install -D ykksm-export $(DESTDIR)$(binprefix)/ykksm-export
+	install -D ykksm-checksum $(DESTDIR)$(binprefix)/ykksm-checksum
+	install -D --backup --mode 640 --group $(wwwgroup) ykksm-config.php $(DESTDIR)$(etcprefix)/ykksm-config.php
+	install -D ykksm-db.sql $(DESTDIR)$(docprefix)/ykksm-db.sql
+	install -D Makefile $(DESTDIR)$(docprefix)/ykksm.mk
+	install -D $(DOCS) $(DESTDIR)$(docprefix)/
 
 wwwprefix = /var/www/wsapi
 
