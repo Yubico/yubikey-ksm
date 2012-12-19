@@ -117,3 +117,16 @@ release: dist
 	git tag -sm "$(PACKAGE)-$(VERSION)" $(PACKAGE)-$(VERSION)
 	git push
 	git push --tags
+
+	git add $(PACKAGE)-$(VERSION).tgz
+	git add $(PACKAGE)-$(VERSION).tgz.sig
+	git stash
+	git checkout gh-pages
+	git stash pop
+	git mv $(PACKAGE)-$(VERSION).tgz releases/
+	git mv $(PACKAGE)-$(VERSION).tgz.sig releases/
+	x=$$(ls -1 releases/*.tgz | awk -F\- '{print $$3}' | sed 's/.tgz//' | paste -sd ',' -);sed -i -e "2s/\[.*\]/[$$x]/" releases.html
+	git add releases.html
+	git commit -m "Added tarball for release $(VERSION)"
+	git push
+	git checkout master
