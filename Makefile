@@ -52,7 +52,7 @@ phpprefix = /usr/share/ykksm
 docprefix = /usr/share/doc/ykksm
 wwwgroup = www-data
 
-install:
+install: $(MANS)
 	install -D --mode 640 .htaccess $(DESTDIR)$(phpprefix)/.htaccess
 	install -D --mode 640 ykksm-decrypt.php $(DESTDIR)$(phpprefix)/ykksm-decrypt.php
 	install -D --mode 640 ykksm-utils.php $(DESTDIR)$(phpprefix)/ykksm-utils.php
@@ -86,7 +86,8 @@ $(PACKAGE)-$(VERSION).tgz: $(FILES) $(MANS)
 
 dist: $(PACKAGE)-$(VERSION).tgz
 
-distclean: clean clean-man
+distclean: clean
+	rm -f *.1
 
 clean:
 	rm -f *~
@@ -101,9 +102,6 @@ NAME_ykksm-import = 'Tool to import key data on the YKKSM-KEYPROV format.'
 	help2man -N --name=$(NAME_$*) --version-string=1 ./$* > $@
 
 man: $(MANS)
-
-clean-man:
-	rm -f *.1
 
 release: dist
 	@if test -z "$(KEYID)"; then \
