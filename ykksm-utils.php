@@ -45,11 +45,13 @@ function modhex2hex($m)
 
 function aes128ecb_decrypt($key,$in)
 {
-  return bin2hex(mcrypt_ecb(MCRYPT_RIJNDAEL_128,
-			    hex2bin($key),
-			    hex2bin($in),
-			    MCRYPT_DECRYPT,
-			    hex2bin('00000000000000000000000000000000')));
+  $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'ecb', '');
+  $iv = hex2bin('00000000000000000000000000000000');
+  mcrypt_generic_init($td, hex2bin($key), $iv);
+  $result = bin2hex(mdecrypt_generic($td, hex2bin($in)));
+  mcrypt_generic_deinit($td);
+
+  return $result;
 }
 	
 function calculate_crc($token)
