@@ -53,10 +53,17 @@ sub usage {
     exit 1;
 }
 
+#Support dbconfig-common generated database settings, if available
+our ($dbuser, $dbpass, $basepath, $dbname, $dbserver, $dbport, $dbtype);
+if( -e '/etc/ykksm/config-db.cfg' ) {
+    require '/etc/ykksm/config-db.cfg';
+} else {
+    $dbtype = 'mysql';
+    $dbname = 'ykksm';
+}
+
 my $verbose = 0;
-my $db = "dbi:mysql:ykksm";
-my $dbuser;
-my $dbpasswd;
+my $db = "dbi:$dbtype:$dbname";
 while ($ARGV[0] =~ m/^-(.*)/) {
     my $cmd = shift @ARGV;
     if (($cmd eq "-v") || ($cmd eq "--verbose")) {
@@ -68,7 +75,7 @@ while ($ARGV[0] =~ m/^-(.*)/) {
     } elsif ($cmd eq "--db-user") {
 	$dbuser = shift;
     } elsif ($cmd eq "--db-passwd") {
-	$dbpasswd = shift;
+	$dbpass = shift;
     }
 }
 
@@ -76,7 +83,7 @@ if ($#ARGV>=0) {
     usage();
 }
 
-my $dbh = DBI->connect($db, $dbuser, $dbpasswd, {'RaiseError' => 1});
+my $dbh = DBI->connect($db, $dbuser, $dbpass, {'RaiseError' => 1});
 my $sth = $dbh->prepare
     ('SELECT serialnr, publicname, internalname, aeskey, lockcode, created FROM yubikeys')
     or die "Couldn't prepare statement: " . $dbh->errstr;
