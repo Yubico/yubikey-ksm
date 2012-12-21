@@ -125,7 +125,7 @@ release: dist
 	git stash pop
 	git mv $(PACKAGE)-$(VERSION).tgz releases/
 	git mv $(PACKAGE)-$(VERSION).tgz.sig releases/
-	x=$$(ls -1 releases/*.tgz | awk -F\- '{print $$3}' | sed 's/.tgz//' | paste -sd ',' -);sed -i -e "2s/\[.*\]/[$$x]/" releases.html
+	x=$$(ls -1 releases/*.tgz | awk -F\- '{print $$3}' | sed 's/.tgz//' | paste -sd ',' - | sed 's/,/, /g');sed -i -e "2s/\[.*\]/[$$x]/" releases.html
 	git add releases.html
 	git commit -m "Added tarball for release $(VERSION)"
 	git push
