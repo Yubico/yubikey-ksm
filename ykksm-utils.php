@@ -28,7 +28,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-function hex2bin($h)
+function yubi_hex2bin($h)
 {
   if (!is_string($h)) return null;
   $r='';
@@ -46,9 +46,9 @@ function modhex2hex($m)
 function aes128ecb_decrypt($key,$in)
 {
   $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'ecb', '');
-  $iv = hex2bin('00000000000000000000000000000000');
-  mcrypt_generic_init($td, hex2bin($key), $iv);
-  $result = bin2hex(mdecrypt_generic($td, hex2bin($in)));
+  $iv = yubi_hex2bin('00000000000000000000000000000000');
+  mcrypt_generic_init($td, yubi_hex2bin($key), $iv);
+  $result = bin2hex(mdecrypt_generic($td, yubi_hex2bin($in)));
   mcrypt_generic_deinit($td);
 
   return $result;

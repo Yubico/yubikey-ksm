@@ -1,5 +1,9 @@
 * Version 1.9 unreleased
 
+  * Renamed hex2bin to yubi_hex2bin.
+    Issue #1 reported by Dain Nilsson, see:
+    https://github.com/Yubico/yubikey-ksm/issues/1
+
 * Version 1.8 released 2013-01-21
 
   * Added ChangeLog to releases.
