@@ -46,10 +46,10 @@ all:
 
 # Installation rules.
 
-etcprefix = /etc/ykksm
+etcprefix = /etc/yubico/ksm
 binprefix = /usr/bin
-phpprefix = /usr/share/ykksm
-docprefix = /usr/share/doc/ykksm
+phpprefix = /usr/share/yubikey-ksm
+docprefix = /usr/share/doc/yubikey-ksm
 wwwgroup = www-data
 
 install: $(MANS)

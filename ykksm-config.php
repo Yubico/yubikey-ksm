@@ -1,7 +1,7 @@
 <?php
-//ykksm will use the configuration stored in /etc/ykksm/config-db.php, if that file exists. If it does not exist, the below values will be used.
+//ykksm will use the configuration stored in /etc/yubico/ksm/config-db.php, if that file exists. If it does not exist, the below values will be used.
 
-if(!include '/etc/ykksm/config-db.php') {
+if(!include '/etc/yubico/ksm/config-db.php') {
 	$dbuser='ykksmreader';
 	$dbpass='yourpassword';
 	$basepath='';
