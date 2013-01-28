@@ -57,7 +57,7 @@ sub usage {
 
 #Support dbconfig-common generated database settings, if available
 our ($dbuser, $dbpass, $basepath, $dbname, $dbserver, $dbport, $dbtype);
-if( -e '/etc/yubico/ksm/config-db.cfg' ) {
+if( -r '/etc/yubico/ksm/config-db.cfg' ) {
     require '/etc/yubico/ksm/config-db.cfg';
 } else {
     $dbtype = 'mysql';
