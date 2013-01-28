@@ -8,6 +8,7 @@ if(!include '/etc/yubico/ksm/config-db.php') {
 	$dbname='ykksm';
 	$dbserver='';
 	$dbport='';
+	$dbtype='mysql';
 }
 
 $db_dsn      = "$dbtype:dbname=$dbname;host=127.0.0.1";
