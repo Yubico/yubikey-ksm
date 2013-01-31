@@ -50,6 +50,7 @@ etcprefix = /etc/yubico/ksm
 binprefix = /usr/bin
 phpprefix = /usr/share/yubikey-ksm
 docprefix = /usr/share/doc/yubikey-ksm
+manprefix = /usr/share/man/man1
 wwwgroup = www-data
 
 install: $(MANS)
