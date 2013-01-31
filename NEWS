@@ -1,8 +1,11 @@
-* Version 1.10 (unreleased)
+* Version 1.10 (released 2013-01-31)
 
   * Changed location of files to /usr/share/yubikey-ksm, etc.
 
   * Changed location of configuration files to /etc/yubico/ksm/.
+
+  * Fixed bug causing scripts reading the database to fail if
+    the config file exists but is not readable by the current user.
 
 * Version 1.9 (released 2013-01-23)
 
