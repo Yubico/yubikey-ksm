@@ -11,7 +11,7 @@ http://yubico.github.com/yubikey-ksm/releases.html
 
 The YK-KSM was designed to work with the YubiKey validation server in PHP:
 
-https://github.com/Yubico/yubikey-val-server-php/
+https://github.com/Yubico/yubikey-val/
 
 Documentation is in doc.
 
