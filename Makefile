@@ -38,6 +38,7 @@ DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/SyncMonitor.wiki
 MANS = ykksm-checksum.1 ykksm-export.1 ykksm-gen-keys.1		\
 	ykksm-import.1
+TMPDIR = /tmp/tmp.yubikey-ksm
 
 all:
 	@echo "Try 'make install' or 'make symlink'."
@@ -125,14 +126,17 @@ release: dist
 	git tag -u $(KEYID) -m "$(PACKAGE)-$(VERSION)" $(PACKAGE)-$(VERSION)
 	git push
 	git push --tags
+	mkdir -p $(TMPDIR)
+        mv $(PACKAGE)-$(VERSION).tgz $(TMPDIR)
+        mv $(PACKAGE)-$(VERSION).tgz.sig $(TMPDIR)
 
-	git add $(PACKAGE)-$(VERSION).tgz
-	git add $(PACKAGE)-$(VERSION).tgz.sig
-	git stash
 	git checkout gh-pages
-	git stash pop
-	git mv $(PACKAGE)-$(VERSION).tgz releases/
-	git mv $(PACKAGE)-$(VERSION).tgz.sig releases/
+	mv $(TMPDIR)/$(PACKAGE)-$(VERSION).tgz releases/
+        mv $(TMPDIR)/$(PACKAGE)-$(VERSION).tgz.sig releases/
+        git add releases/$(PACKAGE)-$(VERSION).tgz
+        git add releases/$(PACKAGE)-$(VERSION).tgz.sig
+        rmdir --ignore-fail-on-non-empty $(TMPDIR)
+
 	x=$$(ls -1v releases/*.tgz | awk -F\- '{print $$3}' | sed 's/.tgz//' | paste -sd ',' - | sed 's/,/, /g' | sed 's/\([0-9.]\{1,\}\)/"\1"/g');sed -i -e "2s/\[.*\]/[$$x]/" releases.html
 	git add releases.html
 	git commit -m "Added tarball for release $(VERSION)"
