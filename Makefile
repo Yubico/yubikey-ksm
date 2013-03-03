@@ -127,15 +127,15 @@ release: dist
 	git push
 	git push --tags
 	mkdir -p $(TMPDIR)
-        mv $(PACKAGE)-$(VERSION).tgz $(TMPDIR)
-        mv $(PACKAGE)-$(VERSION).tgz.sig $(TMPDIR)
+	mv $(PACKAGE)-$(VERSION).tgz $(TMPDIR)
+	mv $(PACKAGE)-$(VERSION).tgz.sig $(TMPDIR)
 
 	git checkout gh-pages
 	mv $(TMPDIR)/$(PACKAGE)-$(VERSION).tgz releases/
-        mv $(TMPDIR)/$(PACKAGE)-$(VERSION).tgz.sig releases/
-        git add releases/$(PACKAGE)-$(VERSION).tgz
-        git add releases/$(PACKAGE)-$(VERSION).tgz.sig
-        rmdir --ignore-fail-on-non-empty $(TMPDIR)
+	mv $(TMPDIR)/$(PACKAGE)-$(VERSION).tgz.sig releases/
+	git add releases/$(PACKAGE)-$(VERSION).tgz
+	git add releases/$(PACKAGE)-$(VERSION).tgz.sig
+	rmdir --ignore-fail-on-non-empty $(TMPDIR)
 
 	x=$$(ls -1v releases/*.tgz | awk -F\- '{print $$3}' | sed 's/.tgz//' | paste -sd ',' - | sed 's/,/, /g' | sed 's/\([0-9.]\{1,\}\)/"\1"/g');sed -i -e "2s/\[.*\]/[$$x]/" releases.html
 	git add releases.html
