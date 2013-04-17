@@ -121,7 +121,7 @@ release: dist
 	fi
 	@head -1 NEWS | grep -q "Version $(VERSION) (released `date -I`)" || \
                 (echo 'error: You need to update date/version in NEWS'; exit 1)
-	@if test ! -d $(YUBICO_GITHUB_REPO); then \
+	@if test ! -d "$(YUBICO_GITHUB_REPO)"; then \
 		echo "yubico.github.com repo not found!"; \
 		echo "Make sure that YUBICO_GITHUB_REPO is set"; \
 		exit 1; \
@@ -129,5 +129,5 @@ release: dist
 	gpg --detach-sign --default-key $(KEYID) $(PACKAGE)-$(VERSION).tgz
 	gpg --verify $(PACKAGE)-$(VERSION).tgz.sig
 	git tag -u $(KEYID) -m "$(PACKAGE)-$(VERSION)" $(PACKAGE)-$(VERSION)
-	echo "Release created and tagged, remember to git push && git push --tags"
+	@echo "Release created and tagged, remember to git push && git push --tags"
 	$(YUBICO_GITHUB_REPO)/publish $(PROJECT) $(VERSION) $(PACKAGE)-$(VERSION).tgz*
