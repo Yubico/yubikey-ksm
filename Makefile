@@ -82,6 +82,8 @@ symlink:
 PROJECT = $(PACKAGE)
 
 $(PACKAGE)-$(VERSION).tgz: $(FILES) $(MANS)
+	git submodule init
+	git submodule update
 	mkdir $(PACKAGE)-$(VERSION) $(PACKAGE)-$(VERSION)/doc
 	cp $(CODE) $(PACKAGE)-$(VERSION)/
 	cp $(MANS) $(PACKAGE)-$(VERSION)/
