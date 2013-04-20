@@ -51,7 +51,7 @@ binprefix = /usr/bin
 phpprefix = /usr/share/yubikey-ksm
 docprefix = /usr/share/doc/yubikey-ksm
 manprefix = /usr/share/man/man1
-wwwgroup = www-data
+wwwgroup = apache
 
 install: $(MANS)
 	install -D --mode 640 .htaccess $(DESTDIR)$(phpprefix)/.htaccess
@@ -107,7 +107,7 @@ NAME_ykksm-gen-keys = 'Tool to generate keys on the YKKSM-KEYPROV format.'
 NAME_ykksm-import = 'Tool to import key data on the YKKSM-KEYPROV format.'
 
 %.1: %
-	help2man -N --name=$(NAME_$*) --version-string=1 ./$* > $@
+	help2man -N --name=$(NAME_$*) ./$* > $@
 
 man: $(MANS)
 
