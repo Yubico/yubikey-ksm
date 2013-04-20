@@ -107,7 +107,7 @@ NAME_ykksm-gen-keys = 'Tool to generate keys on the YKKSM-KEYPROV format.'
 NAME_ykksm-import = 'Tool to import key data on the YKKSM-KEYPROV format.'
 
 %.1: %
-	help2man -N --name=$(NAME_$*) --version-string=1 ./$* > $@
+	help2man -N --name=$(NAME_$*)  --help ./$* > $@
 
 man: $(MANS)
 
