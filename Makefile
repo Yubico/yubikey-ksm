@@ -28,7 +28,7 @@
 
 VERSION = 1.14
 PACKAGE = yubikey-ksm
-CODE = .htaccess Makefile NEWS ykksm-config.php ykksm-db.sql	\
+CODE = .htaccess Makefile NEWS README ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export ykksm-gen-keys	\
 	ykksm-import ykksm-utils.php ykksm-checksum
 DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
