@@ -48,25 +48,59 @@ if (!preg_match("/^([cbdefghijklnrtuv]{0,16})([cbdefghijklnrtuv]{32})$/",
 $id = $matches[1];
 $modhex_ciphertext = $matches[2];
 
-try {
-  $dbh = new PDO($db_dsn, $db_username, $db_password, $db_options);
-} catch (PDOException $e) {
-  syslog(LOG_ERR, "Database error: " . $e->getMessage());
-  die("ERR Database error\n");
-}
+# Oracle support in PDO is highly experimental, OCI is used instead
+# Unfortunately PDO and OCI APIs are different...
+$use_oci = substr($db_dsn,0,3) === 'oci';
+
+if (!$use_oci) {
+  try {
+    $dbh = new PDO($db_dsn, $db_username, $db_password, $db_options);
+   } catch (PDOException $e) {
+    syslog(LOG_ERR, "Database error: " . $e->getMessage());
+    die("ERR Database error\n");
+   }
+ }
+else {
+  # "oci:" prefix needs to be removed before passing db_dsn to OCI
+  $db_dsn = substr($db_dsn, 4);
+  $dbh = oci_connect($db_username, $db_password, $db_dsn);
+  if (!$dbh) {
+    $error = oci_error();
+    syslog(LOG_err, "Database error: " . $error["message"]);
+    die("ERR Database error\n");
+   }
+ }
 
 $sql = "SELECT aeskey, internalname FROM yubikeys " .
-       "WHERE publicname = '$id' AND active";
-$result = $dbh->query($sql);
-if (!$result) {
-  syslog(LOG_ERR, "Database query error.  Query: " . $sql . " Error: " .
-	 print_r ($dbh->errorInfo (), true));
-  die("ERR Database error\n");
-}
+       "WHERE publicname = '$id' AND active = 1";
 
-$row = $result->fetch(PDO::FETCH_ASSOC);
-$aeskey = $row['aeskey'];
-$internalname = $row['internalname'];
+if (!$use_oci) {
+  $result = $dbh->query($sql);
+  if (!$result) {
+    syslog(LOG_ERR, "Database query error.  Query: " . $sql . " Error: " .
+           print_r ($dbh->errorInfo (), true));
+    die("ERR Database error\n");
+   }
+
+  $row = $result->fetch(PDO::FETCH_ASSOC);
+  $aeskey = $row['aeskey'];
+  $internalname = $row['internalname'];
+ }
+else {
+  $result = oci_parse($dbh, $sql);
+  $execute = oci_execute($result);
+  if (!$execute) {
+    $error = oci_error($result);
+    syslog(LOG_ERR, 'Database query error.   Query:  ' . $sql . 'Error: CODE : ' . $error["code"] .
+           ' MESSAGE : ' . $error["message"] . ' POSITION : ' . $error["offset"] .
+           ' STATEMENT : ' . $error["sqltext"]);
+    die("ERR Database error\n");
+   }
+
+  $row = oci_fetch_array($result, OCI_ASSOC);
+  $aeskey = $row['AESKEY'];
+  $internalname = $row['INTERNALNAME'];
+ }
 
 if (!$aeskey) {
   syslog(LOG_INFO, "Unknown yubikey: " . $otp);
