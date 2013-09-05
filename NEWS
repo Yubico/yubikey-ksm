@@ -1,5 +1,7 @@
 * Version 1.14 (unreleased)
 
+  * Add Oracle support via OCI.
+
 * Version 1.13 (released 2013-04-17)
 
   * Updated release procedure, project moved from Google Code to GitHub.
