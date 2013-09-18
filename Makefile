@@ -129,5 +129,5 @@ release: dist
 	gpg --detach-sign --default-key $(KEYID) $(PACKAGE)-$(VERSION).tgz
 	gpg --verify $(PACKAGE)-$(VERSION).tgz.sig
 	git tag -u $(KEYID) -m "$(PACKAGE)-$(VERSION)" $(PACKAGE)-$(VERSION)
-	@echo "Release created and tagged, remember to git push && git push --tags"
 	$(YUBICO_GITHUB_REPO)/publish $(PROJECT) $(VERSION) $(PACKAGE)-$(VERSION).tgz*
+	@echo "Release created and tagged, remember to git push && git push --tags"
