@@ -34,11 +34,11 @@ require_once 'ykksm-utils.php';
 openlog("ykksm", LOG_PID, $logfacility)
   or die("ERR Syslog open error\n");
 
-$otp = $_REQUEST["otp"];
-if (!$otp) {
+if (!isset($_REQUEST["otp"])) {
   syslog(LOG_INFO, "No OTP provided");
-  die("ERR No OTP provided\n");
+  die("ERR Invalid OTP format\n");
  }
+$otp = $_REQUEST["otp"];
 
 if (!preg_match("/^([cbdefghijklnrtuv]{0,16})([cbdefghijklnrtuv]{32})$/",
 		$otp, $matches)) {
