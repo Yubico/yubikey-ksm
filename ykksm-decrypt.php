@@ -75,7 +75,7 @@ else {
 if (!$use_oci) {
   // use OR for active because some databases do support booleans (sqlite) and some do not.
   $sql = "SELECT aeskey, internalname FROM yubikeys" .
-         " WHERE publicname = :id AND (active = 'true' OR active=1);
+         " WHERE publicname = :id AND (active = 'true' OR active=1)";
          
   $sth = $dbh->prepare($sql);
   if ($sth === false) {
