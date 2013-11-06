@@ -46,6 +46,8 @@ $dbrun 'insert into yubikeys (publicname,internalname,aeskey) values("idkfefrdht
 
 sudo /etc/init.d/apache2 restart
 
+phpenv global
+
 set +e
 
 curl --silent http://localhost/wsapi/decrypt?otp=idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku | grep -q "^OK counter=0001 low=8d40 high=0f use=00"
