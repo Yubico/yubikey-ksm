@@ -46,7 +46,7 @@ $dbrun "insert into yubikeys (publicname,internalname,aeskey,serialnr,created,lo
 
 sudo /etc/init.d/apache2 restart
 
-phpenv global
+find $HOME/.phpenv
 
 set +e
 
