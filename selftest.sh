@@ -30,8 +30,7 @@ sudo apt-get install -qq -y $packages
 
 git submodule update --init
 sudo make install symlink
-echo 'include_path = "/etc/yubico/ksm:/usr/share/ykksm"' > ykksm.ini
-phpenv config-add ykksm.ini
+sudo sh -c "echo 'include_path = "/etc/yubico/ksm:/usr/share/ykksm"' > /etc/php5/conf.d/ykksm.ini"
 sudo chmod a+r /usr/share/yubikey-ksm/* /etc/yubico/ksm/*
 cat > config-db.php << EOF
 <?php
