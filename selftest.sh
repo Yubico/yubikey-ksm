@@ -50,6 +50,7 @@ set +e
 
 curl --silent http://localhost/wsapi/decrypt?otp=idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku | grep -q "^OK counter=0001 low=8d40 high=0f use=00"
 if [ $? != 0 ]; then
+  curl "http://localhost/wsapi/decrypt?otp=idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku"
   sudo tail /var/log/apache2/error.log /var/log/apache2/access.log /var/log/auth.log
   exit 1
 else
