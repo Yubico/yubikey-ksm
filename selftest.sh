@@ -26,7 +26,7 @@ else
 fi
 
 sudo apt-get update -qq
-sudo apt-get install -qq --y $packages
+sudo apt-get install -qq -y $packages
 
 git submodule update --init
 sudo make install symlink
