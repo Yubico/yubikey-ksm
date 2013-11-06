@@ -42,7 +42,7 @@ cat > config-db.php << EOF
 EOF
 sudo mv config-db.php /etc/yubico/ksm/
 
-$dbrun 'insert into yubikeys (publicname,internalname,aeskey) values("idkfefrdhtru","609963eae7b5","c68c9df8cbfe7d2f994cb904046c7218");'
+$dbrun "insert into yubikeys (publicname,internalname,aeskey,serialnr,created,lockcode,creator) values('idkfefrdhtru','609963eae7b5','c68c9df8cbfe7d2f994cb904046c7218',0,0,'','');"
 
 sudo /etc/init.d/apache2 restart
 
