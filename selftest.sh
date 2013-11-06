@@ -12,7 +12,7 @@ if [ "x$DB" = "xmysql" ]; then
   mysql -u $dbuser ykksm < ykksm-db.sql
 
   dbrun="mysql -u $dbuser ykksm -e"
-else [ "x$DB" = "xpgsql" ]; then
+elif [ "x$DB" = "xpgsql" ]; then
   dbuser=postgres
   packages="$packages php5-pgsql"
 
@@ -20,6 +20,9 @@ else [ "x$DB" = "xpgsql" ]; then
   psql -U $dbuser ykksm < ykksm-db.sql
 
   dbrun="psql -U $dbuser ykksm -c"
+else
+  echo "unknown DB $DB"
+  exit 1
 fi
 
 sudo apt-get update -qq
