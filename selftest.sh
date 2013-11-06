@@ -45,6 +45,9 @@ sudo mv config-db.php /etc/yubico/ksm/
 $dbrun 'insert into yubikeys (publicname,internalname,aeskey) values("idkfefrdhtru","609963eae7b5","c68c9df8cbfe7d2f994cb904046c7218");'
 
 sudo /etc/init.d/apache2 restart
+
+set +e
+
 curl --silent http://localhost/wsapi/decrypt?otp=idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku | grep -q "^OK counter=0001 low=8d40 high=0f use=00"
 if [ $? != 0 ]; then
   tail /var/log/apache2/*
