@@ -34,11 +34,11 @@ require_once 'ykksm-utils.php';
 openlog("ykksm", LOG_PID, $logfacility)
   or die("ERR Syslog open error\n");
 
-$otp = $_REQUEST["otp"];
-if (!$otp) {
+if (!isset($_GET["otp"])) {
   syslog(LOG_INFO, "No OTP provided");
-  die("ERR No OTP provided\n");
+  die("ERR Invalid OTP format\n");
  }
+$otp = $_GET["otp"];
 
 if (!preg_match("/^([cbdefghijklnrtuv]{0,16})([cbdefghijklnrtuv]{32})$/",
 		$otp, $matches)) {
@@ -66,27 +66,50 @@ else {
   $dbh = oci_connect($db_username, $db_password, $db_dsn);
   if (!$dbh) {
     $error = oci_error();
-    syslog(LOG_err, "Database error: " . $error["message"]);
+    syslog(LOG_ERR, "Database error: " . $error["message"]);
     die("ERR Database error\n");
    }
  }
 
-$sql = "SELECT aeskey, internalname FROM yubikeys " .
-       "WHERE publicname = '$id' AND active = 1";
 
 if (!$use_oci) {
-  $result = $dbh->query($sql);
-  if (!$result) {
+  // use OR for active because some databases do support booleans (sqlite) and some do not.
+  $sql = "SELECT aeskey, internalname FROM yubikeys" .
+         " WHERE publicname = :id AND (active = 'true' OR active=1)";
+         
+  $sth = $dbh->prepare($sql);
+  if ($sth === false) {
+    syslog(LOG_ERR, "Database prepare error.  Query: " . $sql . " Error: " .
+                     print_r ($dbh->errorInfo (), true));
+    die("ERR Database error\n");
+  }
+  
+  $result = $sth->bindParam(':id', $id, PDO::PARAM_STR, 16);
+  if ($result === false) {
+    syslog(LOG_ERR, "Database bind error.  Query: " . $sql . " Error: " .
+                     print_r ($dbh->errorInfo (), true));
+    die("ERR Database error\n");
+  }
+ 
+  $result = $sth->execute();
+  if ($result === false) {
     syslog(LOG_ERR, "Database query error.  Query: " . $sql . " Error: " .
            print_r ($dbh->errorInfo (), true));
     die("ERR Database error\n");
-   }
+  }
 
-  $row = $result->fetch(PDO::FETCH_ASSOC);
+  $row = $sth->fetch(PDO::FETCH_ASSOC);
+  if ($row === false ) {
+    syslog(LOG_INFO, "Unknown yubikey: " . $otp);
+    die("ERR Unknown yubikey\n");
+  }
+
   $aeskey = $row['aeskey'];
   $internalname = $row['internalname'];
  }
 else {
+  $sql = "SELECT aeskey, internalname FROM yubikeys " .
+       "WHERE publicname = '$id' AND active = 1";  
   $result = oci_parse($dbh, $sql);
   $execute = oci_execute($result);
   if (!$execute) {
