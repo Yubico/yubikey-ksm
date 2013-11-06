@@ -2,7 +2,7 @@
 set -e
 set -x
 
-packages="help2man apache2 php5-mcrypt curl"
+packages="help2man apache2 libapache2-mod-php5 php5-mcrypt curl"
 
 if [ "x$DB" = "xmysql" ]; then
   dbuser=travis
@@ -30,7 +30,8 @@ sudo apt-get install -qq -y $packages
 
 git submodule update --init
 sudo make install symlink
-sudo sh -c "echo 'include_path = "/etc/yubico/ksm:/usr/share/ykksm"' > /etc/php5/conf.d/ykksm.ini"
+echo 'include_path = "/etc/yubico/ksm:/usr/share/ykksm"' > ykksm.ini
+phpenv config-add ykksm.ini
 sudo chmod a+r /usr/share/yubikey-ksm/* /etc/yubico/ksm/*
 cat > config-db.php << EOF
 <?php
