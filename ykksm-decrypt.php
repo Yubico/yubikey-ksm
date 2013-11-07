@@ -72,7 +72,7 @@ else {
  }
 
 $sql = "SELECT aeskey, internalname FROM yubikeys " .
-       "WHERE publicname = '$id' AND active = 1";
+       "WHERE publicname = '$id' AND active";
 
 if (!$use_oci) {
   $result = $dbh->query($sql);
@@ -87,6 +87,7 @@ if (!$use_oci) {
   $internalname = $row['internalname'];
  }
 else {
+  $sql .= " = 1";
   $result = oci_parse($dbh, $sql);
   $execute = oci_execute($result);
   if (!$execute) {
