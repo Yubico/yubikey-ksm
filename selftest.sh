@@ -40,8 +40,26 @@ set +e
 echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku');" -F ykksm-decrypt.php | grep -q "^OK counter=0001 low=8d40 high=0f use=00"
 if [ $? != 0 ]; then
   echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku');" -F ykksm-decrypt.php
-  sudo tail /var/log/apache2/error.log /var/log/apache2/access.log /var/log/auth.log
+  sudo tail /var/log/auth.log
   exit 1
 else
-  echo "Success!"
+  echo "Success 1"
+fi
+
+echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv');" -F ykksm-decrypt.php | grep -q "^ERR Corrupt OTP"
+if [ $? != 0 ]; then
+  echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv');" -F ykksm-decrypt.php
+  sudo tail /var/log/auth.log
+  exit 1
+else
+  echo "Success 2"
+fi
+
+echo '' | php -B "\$_REQUEST = array('otp' => 'cdkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv');" -F ykksm-decrypt.php | grep -q "^ERR Unknown yubikey"
+if [ $? != 0 ]; then
+  echo '' | php -B "\$_REQUEST = array('otp' => 'cdkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv');" -F ykksm-decrypt.php
+  sudo tail /var/log/auth.log
+  exit 1
+else
+  echo "Success 3"
 fi
