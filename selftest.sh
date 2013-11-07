@@ -37,9 +37,9 @@ $dbrun "insert into yubikeys (publicname,internalname,aeskey,serialnr,created,lo
 
 set +e
 
-echo '' | php -B "\$_REQUEST => array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku');" -F ykksm-decrypt.php | grep -q "^OK counter=0001 low=8d40 high=0f use=00"
+echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku');" -F ykksm-decrypt.php | grep -q "^OK counter=0001 low=8d40 high=0f use=00"
 if [ $? != 0 ]; then
-  echo '' | php -B "\$_REQUEST => array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku');" -F ykksm-decrypt.php
+  echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku');" -F ykksm-decrypt.php
   sudo tail /var/log/apache2/error.log /var/log/apache2/access.log /var/log/auth.log
   exit 1
 else
