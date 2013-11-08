@@ -16,6 +16,14 @@ elif [ "x$DB" = "xpgsql" ]; then
   psql -U $dbuser ykksm < ykksm-db.sql
 
   dbrun="psql -U $dbuser ykksm -c"
+elif [ "x$DB" = "xsqlite" ]; then
+  dbuser=""
+
+  dbfile=`mktemp`
+  sqlite3 $dbfile < ykksm-db.sql
+  sed -i "s,^.*db_dsn.*$,\$db_dsn = \"sqlite:$dbfile\";," ykksm-config.php
+
+  dbrun="sqlite3 $dbfile"
 else
   echo "unknown DB $DB"
   exit 1

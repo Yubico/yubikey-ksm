@@ -7,5 +7,6 @@ php:
 env:
   - DB=mysql
   - DB=pgsql
+  - DB=sqlite
 script:
   - ./selftest.sh
