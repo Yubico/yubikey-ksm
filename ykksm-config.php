@@ -15,5 +15,6 @@ $db_dsn      = "$dbtype:dbname=$dbname;host=127.0.0.1";
 $db_username = $dbuser;
 $db_password = $dbpass;
 $db_options  = array();
-$logfacility = LOG_AUTH;
+
+$logging     = FALSE; // set to TRUE to log anything
 ?>

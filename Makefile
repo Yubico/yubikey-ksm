@@ -30,7 +30,7 @@ VERSION = 1.14
 PACKAGE = yubikey-ksm
 CODE = .htaccess Makefile NEWS README ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export ykksm-gen-keys	\
-	ykksm-import ykksm-utils.php ykksm-checksum
+	ykksm-import ykksm-utils.php ykksm-log.php ykksm-checksum
 DOCS = doc/DecryptionProtocol.wiki doc/DesignGoals.wiki		\
 	doc/GenerateKeys.wiki doc/GenerateKSMKey.wiki		\
 	doc/ImportKeysToKSM.wiki doc/Installation.wiki		\
@@ -56,6 +56,7 @@ wwwgroup = www-data
 install: $(MANS)
 	install -D --mode 640 .htaccess $(DESTDIR)$(phpprefix)/.htaccess
 	install -D --mode 640 ykksm-decrypt.php $(DESTDIR)$(phpprefix)/ykksm-decrypt.php
+	install -D --mode 640 ykksm-log.php $(DESTDIR)$(phpprefix)/ykksm-log.php
 	install -D --mode 640 ykksm-utils.php $(DESTDIR)$(phpprefix)/ykksm-utils.php
 	install -D ykksm-gen-keys $(DESTDIR)$(binprefix)/ykksm-gen-keys
 	install -D ykksm-import $(DESTDIR)$(binprefix)/ykksm-import
