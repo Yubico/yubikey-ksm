@@ -1,3 +1,9 @@
+* Version 1.15 (unreleased)
+
+  * Fix boolean SQL portability issue for Oracle.
+
+  * Add self-testing through Travis.
+
 * Version 1.14 (released 2013-09-18)
 
   * Add Oracle support via OCI.
