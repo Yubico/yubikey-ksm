@@ -1,5 +1,5 @@
 # Written by Simon Josefsson <simon@josefsson.org>.
-# Copyright (c) 2009-2013 Yubico AB
+# Copyright (c) 2009-2014 Yubico AB
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ MANS = ykksm-checksum.1 ykksm-export.1 ykksm-gen-keys.1		\
 
 all:
 	@echo "Try 'make install' or 'make symlink'."
-	@echo "Docs: https://github.com/Yubico/$(PROJECT)/wiki/Installation"
+	@echo "Docs: doc/Installation"
 	@exit 1
 
 # Installation rules.
@@ -121,13 +121,13 @@ release: dist
 	fi
 	@head -1 NEWS | grep -q "Version $(VERSION) (released `date -I`)" || \
                 (echo 'error: You need to update date/version in NEWS'; exit 1)
-	@if test ! -d "$(YUBICO_GITHUB_REPO)"; then \
-		echo "yubico.github.com repo not found!"; \
-		echo "Make sure that YUBICO_GITHUB_REPO is set"; \
+	@if test ! -d "$(YUBICO_WWW_REPO)"; then \
+		echo "yubico www repo not found!"; \
+		echo "Make sure that YUBICO_WWW_REPO is set"; \
 		exit 1; \
 	fi
 	gpg --detach-sign --default-key $(KEYID) $(PACKAGE)-$(VERSION).tgz
 	gpg --verify $(PACKAGE)-$(VERSION).tgz.sig
 	git tag -u $(KEYID) -m "$(PACKAGE)-$(VERSION)" $(PACKAGE)-$(VERSION)
-	$(YUBICO_GITHUB_REPO)/publish $(PROJECT) $(VERSION) $(PACKAGE)-$(VERSION).tgz*
+	$(YUBICO_WWW_REPO)/publish $(PROJECT) $(VERSION) $(PACKAGE)-$(VERSION).tgz*
 	@echo "Release created and tagged, remember to git push && git push --tags"
