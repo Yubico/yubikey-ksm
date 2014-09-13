@@ -30,20 +30,19 @@
 
 require_once 'ykksm-config.php';
 require_once 'ykksm-utils.php';
+require_once('ykksm-log.php');
 
-openlog("ykksm", LOG_PID, $logfacility)
-  or die("ERR Syslog open error\n");
+$myLog = new Log('ykksm-decrypt');
+$myLog->addField('ip', $_SERVER['REMOTE_ADDR']);
 
 $otp = $_REQUEST["otp"];
 if (!$otp) {
-  syslog(LOG_INFO, "No OTP provided");
-  die("ERR No OTP provided\n");
- }
+  logdie($myLog, "NO OTP provided", $logging);
+  }
 
 if (!preg_match("/^([cbdefghijklnrtuv]{0,16})([cbdefghijklnrtuv]{32})$/",
 		$otp, $matches)) {
-  syslog(LOG_INFO, "Invalid OTP format: $otp");
-  die("ERR Invalid OTP format\n");
+  logdie($myLog, "Invalid OTP format: $otp", $logging);
  }
 $id = $matches[1];
 $modhex_ciphertext = $matches[2];
@@ -56,8 +55,7 @@ if (!$use_oci) {
   try {
     $dbh = new PDO($db_dsn, $db_username, $db_password, $db_options);
    } catch (PDOException $e) {
-    syslog(LOG_ERR, "Database error: " . $e->getMessage());
-    die("ERR Database error\n");
+    logdie($myLog, "Database error: " . $e->getMessage(), $logging);
    }
  }
 else {
@@ -66,8 +64,7 @@ else {
   $dbh = oci_connect($db_username, $db_password, $db_dsn);
   if (!$dbh) {
     $error = oci_error();
-    syslog(LOG_err, "Database error: " . $error["message"]);
-    die("ERR Database error\n");
+    logdie($myLog, "Database error: " . $error["message"], $logging);
    }
  }
 
@@ -78,9 +75,8 @@ if (!$use_oci) {
   $sql .= "(active OR active = 'true')";
   $result = $dbh->query($sql);
   if (!$result) {
-    syslog(LOG_ERR, "Database query error.  Query: " . $sql . " Error: " .
-           print_r ($dbh->errorInfo (), true));
-    die("ERR Database error\n");
+    logdie($myLog, "Database query error.  Query: " . $sql . " Error: " .
+           print_r ($dbh->errorInfo (), true), $logging);
    }
 
   $row = $result->fetch(PDO::FETCH_ASSOC);
@@ -93,10 +89,9 @@ else {
   $execute = oci_execute($result);
   if (!$execute) {
     $error = oci_error($result);
-    syslog(LOG_ERR, 'Database query error.   Query:  ' . $sql . 'Error: CODE : ' . $error["code"] .
+    logdie($myLog, 'Database query error.   Query:  ' . $sql . 'Error: CODE : ' . $error["code"] .
            ' MESSAGE : ' . $error["message"] . ' POSITION : ' . $error["offset"] .
-           ' STATEMENT : ' . $error["sqltext"]);
-    die("ERR Database error\n");
+           ' STATEMENT : ' . $error["sqltext"], $logging);
    }
 
   $row = oci_fetch_array($result, OCI_ASSOC);
@@ -105,8 +100,7 @@ else {
  }
 
 if (!$aeskey) {
-  syslog(LOG_INFO, "Unknown yubikey: " . $otp);
-  die("ERR Unknown yubikey\n");
+  logdie($myLog, "Unknown yubikey: " . $otp, $logging);
  }
 
 $ciphertext = modhex2hex($modhex_ciphertext);
@@ -114,13 +108,11 @@ $plaintext = aes128ecb_decrypt($aeskey, $ciphertext);
 
 $uid = substr($plaintext, 0, 12);
 if (strcmp($uid, $internalname) != 0) {
-  syslog(LOG_ERR, "UID error: $otp $plaintext: $uid vs $internalname");
-  die("ERR Corrupt OTP\n");;
+  logdie($myLog, "UID error: $otp $plaintext: $uid vs $internalname", $logging);
  }
 
 if (!crc_is_good($plaintext)) {
-  syslog(LOG_ERR, "CRC error: $otp: $plaintext");
-  die("ERR Corrupt OTP\n");
+  logdie($myLog, "CRC error: $otp: $plaintext", $logging);
  }
 
 # Mask out interesting fields
@@ -131,8 +123,7 @@ $use = substr($plaintext, 22, 2);
 
 $out = "OK counter=$counter low=$low high=$high use=$use";
 
-syslog(LOG_INFO, "SUCCESS OTP $otp PT $plaintext $out")
-  or die("ERR Log error\n");
+$myLog->log(LOG_DEBUG, "SUCCESS OTP $otp PT $plaintext $out", NULL, $logging);
 
 print "$out\n";
 

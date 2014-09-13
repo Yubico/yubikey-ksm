@@ -1,7 +1,6 @@
 <?php
 
-# Written by Simon Josefsson <simon@josefsson.org>.
-# Copyright (c) 2009-2013 Yubico AB
+# Copyright (c) 2010-2013 Yubico AB
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -28,60 +27,50 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-function yubi_hex2bin($h)
+class Log
 {
-  if (!is_string($h)) return null;
-  $r='';
-  for ($a=0; $a<strlen($h); $a+=2) {
-    $r.=chr(hexdec($h{$a}.$h{($a+1)}));
+
+  function __construct($name='ykksm')
+  {
+    $this->name=$name;
+    $this->fields=array();
+
+    $this->LOG_LEVELS = array(LOG_EMERG=>'LOG_EMERG',
+                              LOG_ALERT=>'LOG_ALERT',
+                              LOG_CRIT=>'LOG_CRIT',
+                              LOG_ERR=>'LOG_ERR',
+                              LOG_WARNING=>'LOG_WARNING',
+                              LOG_NOTICE=>'LOG_NOTICE',
+                              LOG_INFO=>'LOG_INFO',
+                              LOG_DEBUG=>'LOG_DEBUG');
+
+    openlog("ykksm", LOG_PID, LOG_LOCAL0);
   }
-  return $r;
-}
 
-function modhex2hex($m)
-{
-  return strtr ($m, "cbdefghijklnrtuv", "0123456789abcdef");
-}
+  function addField($name, $value)
+  {
+    $this->fields[$name]=$value;
+  }
 
-function aes128ecb_decrypt($key,$in)
-{
-  $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'ecb', '');
-  $iv = yubi_hex2bin('00000000000000000000000000000000');
-  mcrypt_generic_init($td, yubi_hex2bin($key), $iv);
-  $result = bin2hex(mdecrypt_generic($td, yubi_hex2bin($in)));
-  mcrypt_generic_deinit($td);
-
-  return $result;
-}
-	
-function calculate_crc($token)
-{
-  $crc = 0xffff;
-
-  for ($i = 0; $i < 16; $i++ ) {
-    $b = hexdec($token[$i*2].$token[($i*2)+1]);
-    $crc = $crc ^ ($b & 0xff);
-    for ($j = 0; $j < 8; $j++) {
-      $n = $crc & 1;
-      $crc = $crc >> 1;
-      if ($n != 0) {
-        $crc = $crc ^ 0x8408;
+  function log($priority, $message, $arr=null, $logging=FALSE){
+    if ($logging) {
+      if (is_array($arr)) {
+        foreach($arr as $key=>$value){
+          $message.=" $key=$value ";
+        }
       }
+      # Add fields
+      $msg_fields = "";
+      foreach ($this->fields as $field=>$value) {
+        $msg_fields .= "[" . $value . "] ";
+      }
+      syslog($priority,
+             $this->LOG_LEVELS[$priority] . ':' .
+             $this->name . ':' .
+             $msg_fields .
+             $message);
     }
   }
-  return $crc;
-}
-
-function crc_is_good($token) {
-  $crc = calculate_crc($token);
-  return $crc == 0xf0b8;
-}
-
-
-function logdie ($logger, $str, $logging=FALSE)
-{
-  $logger->log(LOG_INFO, $str, NULL, $logging);
-  die($str . "\n");
 }
 
 ?>
