@@ -12,6 +12,7 @@ if [ "x$DB" = "xmysql" ]; then
 elif [ "x$DB" = "xpgsql" ]; then
   dbuser=postgres
 
+  ps auxww # list processes to debug travis
   psql -U $dbuser -c 'create database ykksm;'
   psql -U $dbuser ykksm < ykksm-db.sql
 
