@@ -22,43 +22,56 @@ are also treated as comments.
 
 The meaning are as follows:
 
-;serialNr:
-: the serial number of the device used for the barcode, decimal integer
-;publicName:
-: encoding of the "external" yubikey prefix, 0-16 modhex characters, typically 12
-: modhex encoded data
-;internalName:
-: encoding of the "internal" yubikey identity, always 6 binary bytes = 12 hex,
-: hex encoded data
-;aesKey:
-: an aes key used for the device, length decides whether it is a 128, 192, or 256 bit keys.
-: hex encoded data
-;lockCode:
-: the locking code, always 6 binary bytes = 12 hex,
-: hex encoded data
-;created:
-: timestamp of when the key was created
-: for example 2009-02-24T17:41:57 or empty
-;accessed:
-: timestamp of when the key was last accessed
-: for example 2009-02-24T17:41:57 or empty
-;progflags:
-: optional field, integer with flags used during personalization
-: to enable, e.g., static key mode or cr output
+* serialNr:
+
+ the serial number of the device used for the barcode, decimal integer
+
+* publicName:
+
+ encoding of the "external" yubikey prefix, 0-16 modhex characters, typically 12
+ modhex encoded data
+
+* internalName:
+
+ encoding of the "internal" yubikey identity, always 6 binary bytes = 12 hex,
+ hex encoded data
+
+* aesKey:
+
+ an aes key used for the device, length decides whether it is a 128, 192, or 256 bit keys.
+ hex encoded data
+
+* lockCode:
+
+ the locking code, always 6 binary bytes = 12 hex,
+ hex encoded data
+
+* created:
+
+ timestamp of when the key was created
+ for example 2009-02-24T17:41:57 or empty
+
+* accessed:
+
+ timestamp of when the key was last accessed
+ for example 2009-02-24T17:41:57 or empty
+
+* progflags:
+
+ optional field, integer with flags used during personalization
+ to enable, e.g., static key mode or cr output
 
 Examples of valid data lines:
 
- <nowiki>
  4711,dlcfffckrcde,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,
  4712,,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40
  4713,dlcfffckrcdedlcf,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40,0
  4714,dlcfffckrcdedlcf,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40,4711
-</nowiki>
 
 Example of actual data using the password 'foobar' (normally it would
 be encrypted to a particular OpenPGP key id):
 
- <nowiki>
+....
  -----BEGIN PGP MESSAGE-----
  Version: GnuPG v1.4.9 (GNU/Linux)
  
@@ -73,7 +86,7 @@ be encrypted to a particular OpenPGP key id):
  DAkppMqXeprjpC4cNvrQsVOKGx7HissA5x4rECLC
  =d54w
  -----END PGP MESSAGE-----
-</nowiki>
+....
 
 === Naming Scheme ===
 
@@ -82,7 +95,6 @@ The files should use the standard GnuPG output extension '.asc'.
 If you want to store many keys in a one-key per file approach, we
 suggest to create files named after the serial number.  For example:
 
- <nowiki>
  0.asc
  1.asc
  2.asc
@@ -96,4 +108,3 @@ suggest to create files named after the serial number.  For example:
  10.asc
  11.asc
  ...
-</nowiki>
