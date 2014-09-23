@@ -1,4 +1,5 @@
-== Format of Key Provisioning Data = =
+Key Provisioning Data Format
+----------------------------
 
 This file holds data used in the Yubikey personalization phase.
 
