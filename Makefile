@@ -26,11 +26,12 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-VERSION = 1.15
+VERSION = 1.16
 PACKAGE = yubikey-ksm
 CODE = .htaccess Makefile NEWS README ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export ykksm-gen-keys	\
-	ykksm-import ykksm-utils.php ykksm-checksum
+	ykksm-import ykksm-utils.php ykksm-checksum \
+	COPYING BLURB
 DOCS = doc/DecryptionProtocol.txt doc/DesignGoals.txt		\
 	doc/GenerateKeys.txt doc/GenerateKSMKey.txt		\
 	doc/ImportKeysToKSM.txt doc/Installation.txt		\
