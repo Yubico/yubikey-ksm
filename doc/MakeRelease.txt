@@ -17,15 +17,15 @@ which can be installed (under Ubuntu) by running:
 
 ===Details===
 
-* Make sure the doc/ sub-directory uses the latest revision.  Confirm with:
-  cd doc && git checkout master && git pull && git diff
-
 * Make sure the version number in Makefile has been incremented.
 
-* Make sure NEWS describes all changes since the last release.  Use https://github.com/Yubico/yubikey-ksm/commits/master to review.
+* Make sure NEWS describes all changes since the last release.  Use
+  'git log -p' to review.
 
-* Change the '(unreleased)' part in NEWS to '(released 20XX-YY-ZZ)' and commit that with a note 'Version Q.P'.
+* Change the '(unreleased)' part in NEWS to '(released 20XX-YY-ZZ)'
+  and commit that with a note 'Version Q.P'.
 
 * Run 'make release'.
 
-* Increment version number in Makefile and add a NEWS template for the next release.
+* Increment version number in Makefile and add a NEWS template for the
+  next release.
