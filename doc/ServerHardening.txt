@@ -1,54 +1,52 @@
-== Server Hardening ==
+Server Hardening
+----------------
 
 While the defaults should be secure, there are some simple
 administrative actions that will increase your overall security.  None
 of these steps are required, but we encourage you to read this
 document to see if the enhancements are relevant for your environment.
 
-=== Tighten PHP configuration ===
+Tighten PHP configuration
+-------------------------
 
 Tighten the security of the PHP installation by creating a file
 /etc/php5/conf.d/harden.ini with the following content:
 
- <nowiki>
  user@host:~$ sudo sh -c 'cat > /etc/php5/conf.d/harden.ini'
  display_errors = Off
  log_errors = On
  user@host:~$ 
-</nowiki>
 
-=== Tighten Apache configuration ===
+Tighten Apache configuration
+----------------------------
 
 Tighten the security of the Apache installation by making sure
 directory listings are disabled globally.  Edit
 /etc/apache2/conf.d/security and make sure the following is
 uncommented:
 
- <nowiki>
  <Directory />
  	AllowOverride None
  	Order Deny,Allow
  	Deny from all
  </Directory>
-</nowiki>
 
-=== Time synchronization ===
+Time Synchronization
+--------------------
 
 For logging and (on the validation server) time-stamping it is
 important to have synchronized clocks.  Install ntp.
 
- <nowiki>
  user@host:~$ sudo apt-get install ntp
  ...
-</nowiki>
 
-=== Firewall ===
+Firewall
+--------
 
 There is no reason why the KSM needs to listen to incoming requests
 from the entire Internet, and restricting access to the intended
 YK-VAL servers are recommended.
 
- <nowiki>
  user@ksm:~$ sudo sh -c 'cat > /etc/network/if-pre-up.d/iptables'
  #!/bin/sh
  # IPv4 firewall:
@@ -74,7 +72,6 @@ YK-VAL servers are recommended.
  ip6tables -A INPUT -p tcp -i eth0 -s 2000:2:3::4 --dport 443 -j ACCEPT
  user@ksm:~$ chmod +x /etc/network/if-pre-up.d/iptables
  user@ksm:~$ 
-</nowiki>
 
 Replace 1.2.3.4 (for IPv4) and 2000:1:2::3 (for IPv6) with the address
 of the host you want to be able to login from via SSH, and replace
@@ -85,7 +82,6 @@ validation server and SSH host.
 For a validation server, you may want to allow HTTP(S) requests from
 anyone, but not anything else.
 
- <nowiki>
  user@val:~$ sudo sh -c 'cat > /etc/network/if-pre-up.d/iptables'
  #!/bin/sh
  # IPv4 firewall
@@ -111,7 +107,6 @@ anyone, but not anything else.
  ip6tables -A INPUT -p tcp -i eth0 --dport 443 -j ACCEPT
  user@ksm:~$ chmod +x /etc/network/if-pre-up.d/iptables
  user@ksm:~$ 
-</nowiki>
 
 Again, replace 1.2.3.4 (for IPv4) and 2000:1:2::3 (for IPv6) with the
 address of the host you want to be able to login from via SSH.
@@ -119,7 +114,6 @@ address of the host you want to be able to login from via SSH.
 If you want to allow SSH and HTTP(S) from everywhere, but nothing
 else, try this:
 
- <nowiki>
  user@val:~$ sudo sh -c 'cat > /etc/network/if-pre-up.d/iptables'
  #!/bin/sh
  # IPv4 firewall
@@ -145,9 +139,9 @@ else, try this:
  ip6tables -A INPUT -p tcp -i eth0 --dport 443 -j ACCEPT
  user@ksm:~$ chmod +x /etc/network/if-pre-up.d/iptables
  user@val:~$ 
-</nowiki>
 
-=== Database encryption ===
+Database Encryption
+-------------------
 
 The database contains sensitive information.  If someone is able to
 access your machine physically, they may shut it off and steal it with
@@ -180,7 +174,6 @@ attempt to mount your encrypted partition automatically.
 
 Setup:
 
- <nowiki>
  user@ksm:~$ sudo apt-get install loop-aes-utils loop-aes-modules-2.6-amd64
  ...
  user@ksm:~$ sudo rmmod loop && sudo modprobe loop
@@ -212,11 +205,9 @@ Setup:
  umount /ksm
  losetup -d /dev/loop0
  user@ksm:~$ sudo chmod +x /usr/local/sbin/ykksm-{start,stop}
-</nowiki>
 
 Slightly adapted for MySQL:
 
- <nowiki>
  user@ksm:~$ sudo apt-get install loop-aes-utils loop-aes-modules-2.6-686
  ...
  user@ksm:~$ sudo rmmod loop && sudo modprobe loop
@@ -247,7 +238,6 @@ Slightly adapted for MySQL:
  umount /ksm
  losetup -d /dev/loop0
  user@ksm:~$ sudo chmod +x /usr/local/sbin/ykksm-{start,stop}
-</nowiki>
 
 Then in the future, to start the YK-KSM, you will need to login to the
 machine and issue the command 'sudo ykksm-start' and enter the disk
@@ -255,7 +245,8 @@ encryption password.
 
 Again, make sure that you don't use any unencrypted swap.
 
-=== Intrusion detection ===
+Intrusion Detection
+-------------------
 
 To make some attacks discussed in the previous section harder, make
 sure that your system has a hardware intrusion detection system and

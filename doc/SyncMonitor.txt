@@ -1,4 +1,5 @@
-== YK-KSM Synchronization Monitor ==
+YK-KSM Synchronization Monitor
+------------------------------
 
 If you deploy multiple redundant YK-KSM instances, it is important to
 monitor them to make sure the data they have is synchronized.  While
@@ -13,18 +14,14 @@ and AES key.
 Sample output looks like this, first there is a Unix time (for
 freshness) and then is the truncated hash value.
 
- <nowiki>
- 1284488221
- 50f5649b80
-</nowiki>
+  1284488221
+  50f5649b80
 
 The script requires the Perl SHA-1 package.  Install it like this:
 
- <nowiki>
- user@ksm:~$ sudo apt-get install libdigest-sha1-perl
- ...
- user@ksm:~$ 
-</nowiki>
+  user@ksm:~$ sudo apt-get install libdigest-sha1-perl
+  ...
+  user@ksm:~$ 
 
 The typical way to use this is either manually or to run it in a cron
 job and output the hash to a file that can be downloaded by a remote
@@ -33,14 +30,12 @@ that downloads this file from all of your KSMs, and the Nagios check
 verify that all values are 1) fresh (Unix time is not too old) and 2)
 that the truncated hash value is identical on all KSMs.
 
- <nowiki>
- user@ksm:~$ sudo sh -c 'cat > /etc/cron.hourly/run-ykksm-checksum'
- #!/bin/sh
- FILE=/var/www/checksum.txt
- (date --utc +%s; ykksm-checksum --db-user ykksmreader --db-passwd `grep password /etc/yubico/ksm/ykksm-config.php|cut -d\  -f3|cut -d\" -f2`) > $FILE.tmp
- mv $FILE.tmp $FILE
- user@ksm:~$ sudo chmod +x /etc/cron.hourly/run-ykksm-checksum
-</nowiki>
+  user@ksm:~$ sudo sh -c 'cat > /etc/cron.hourly/run-ykksm-checksum'
+  #!/bin/sh
+  FILE=/var/www/checksum.txt
+  (date --utc +%s; ykksm-checksum --db-user ykksmreader --db-passwd `grep passwo rd /etc/yubico/ksm/ykksm-config.php|cut -d\  -f3|cut -d\" -f2`) > $FILE.tmp
+  mv $FILE.tmp $FILE
+  user@ksm:~$ sudo chmod +x /etc/cron.hourly/run-ykksm-checksum
 
 If you notice mismatches, you may want to run ykksm-checksum with the
 '-v' parameter on the different hosts and then use 'diff -ur' or

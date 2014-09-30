@@ -89,7 +89,8 @@ be encrypted to a particular OpenPGP key id):
  -----END PGP MESSAGE-----
 ....
 
-=== Naming Scheme ===
+Naming Scheme
+-------------
 
 The files should use the standard GnuPG output extension '.asc'.
 

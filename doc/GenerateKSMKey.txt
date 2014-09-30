@@ -1,4 +1,5 @@
-== Generate KSM Key ==
+Generate KSM Key
+----------------
 
 Import of key material to an YK-KSM is typically always done via the
 OpenPGP encrypted/signed KeyProvisioningFormat format.  This setup
@@ -11,7 +12,6 @@ key id of '8B88A11B'.
 After this step you may want to generate AES keys for your YubiKeys,
 see [[GenerateKeys]], and then import them to your KSM, see
 [[ImportKeysToKSM]].
-
  
  user@crater:~$ gpg --gen-key
  gpg (GnuPG) 1.4.9; Copyright (C) 2008 Free Software Foundation, Inc.

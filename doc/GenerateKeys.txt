@@ -1,4 +1,5 @@
-== Generate Keys ==
+Generate Keys
+-------------
 
 To generate some AES keys for your !YubiKeys served via your YK-KSM,
 you use the 'ykksm-gen-keys' tool.  The tool is useful for generating
@@ -28,7 +29,7 @@ into a separate machine with a separate OpenPGP key.
 
 To display the test keys above, you can decrypt them using GnuPG:
 
- <nowiki>user@ksm:~$ gpg < keys.txt 
+ user@ksm:~$ gpg < keys.txt
 
  You need a passphrase to unlock the secret key for
  user: "YK-KSM crater Import Key"
@@ -45,7 +46,7 @@ To display the test keys above, you can decrypt them using GnuPG:
  5,cccccccccccg,c55773192393,7387b5f6bede83f64a9cd75b2023826a,d70c937bbbff,2009-12-14T16:40:57,
  gpg: Signature made Mon 14 Dec 2009 04:40:57 PM CET using DSA key ID 8B88A11B
  gpg: Good signature from "YK-KSM crater Import Key"
- user@ksm:~$</nowiki>
+ user@ksm:~$
 
 The format is documented in the KeyProvisioningFormat wiki page.
 
@@ -53,7 +54,7 @@ To generate many small files each containing just one key, you can use
 a small wrapper like this:
 
 
- <nowiki>#!/bin/sh
+ #!/bin/sh
  
  set -e
  
@@ -75,4 +76,4 @@ a small wrapper like this:
  while test $cur -le $stop; do
      ykksm-gen-keys $urandom $cur | gpg -a --sign --encrypt -r $key > $cur.asc
      cur=`expr $cur + 1`
- done</nowiki>
+ done

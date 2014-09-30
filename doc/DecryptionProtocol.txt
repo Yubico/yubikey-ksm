@@ -1,4 +1,5 @@
-== Yubikey KSM Decryption Protocol ==
+Yubikey KSM Decryption Protocol
+-------------------------------
 
 The protocol for asking the Yubikey Key Storage Module to decrypt an
 OTP is to request a HTTP resource as follows:
