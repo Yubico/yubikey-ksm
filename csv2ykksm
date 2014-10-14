@@ -1,0 +1,90 @@
+#!/usr/bin/perl
+
+# Written by Michael Bischof <mb@byteworks.ch>.
+# Copyright (c) 2014 Byteworks GmbH
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#
+#   * Redistributions of source code must retain the above copyright
+#     notice, this list of conditions and the following disclaimer.
+#
+#   * Redistributions in binary form must reproduce the above
+#     copyright notice, this list of conditions and the following
+#     disclaimer in the documentation and/or other materials provided
+#     with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+use warnings;
+use strict;
+use Date::Parse;
+use POSIX qw(strftime);
+
+sub usage {
+    print "Usage: $0 [--help]\n";
+    print "\n";
+    print "Tool to convert the personalizations tool csv file to the YKKSM-KEYPROV format.\n";
+    print "\n";
+    print "Usage example:\n";
+    print "\n";
+    print "  ./csv2ykksm < keys.csv > keys.txt\n";
+    print "\n";
+    exit 1;
+}
+
+while (defined($ARGV[0]) && $ARGV[0] =~ m/^-(.*)/) {
+    my $cmd = shift @ARGV;
+    if (($cmd eq "-h") || ($cmd eq "--help")) {
+	usage();
+    }
+}
+
+if ($#ARGV>=0) {
+    usage();
+}
+
+my $line;
+my @line;
+my $serial = 1;
+
+printf("# ykksm 1\n");
+printf("# serialnr,identity,internaluid,aeskey,lockpw,created,accessed[,progflags]\n");
+
+while ($line = <STDIN>) {
+    $line =~ s/(^#|^\s+|\s+$|\n+|\r+)//;
+    @line = split(/,/, $line);
+
+    next if (!@line);
+    next if ($line[0] ne 'Yubico OTP');
+
+    my @date = strptime($line[1]);
+    $date[5] += 100;
+    delete($date[6]);
+
+    printf("%s,%s,%s,%s,%s,%s\n",
+        $serial++,
+        $line[3],
+        $line[4], 
+        $line[5],
+        (defined($line[7]) ? $line[7] : ''),
+        strftime("%Y-%m-%dT%H:%M:%S", @date)
+    );
+}
+
+printf("# the end\n");
+
+__END__
+
