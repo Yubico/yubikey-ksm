@@ -9,7 +9,7 @@ providing two interfaces:
 * Adding new AES keys
 
 It is intentionally not possible to extract the AES keys or to make
-modifications to the database content, see link:Design_Goals.adoc[DesignGoals].
+modifications to the database content, see link:Design_Goals.adoc[Design Goals].
 
 The installation procedure documented below applies to any Unix-like
 environment, although it was written for Debian GNU/Linux version 5.0
