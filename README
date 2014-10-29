@@ -1,5 +1,4 @@
-YubiKey Key Storage Module (YK-KSM)
-===================================
+== YubiKey Key Storage Module (YK-KSM)
 
 The YubiKey Key Storage Module (YK-KSM) provides a AES key storage
 facility for use with a YubiKey validation server.
@@ -17,8 +16,7 @@ https://developers.yubico.com/yubikey-val/
 
 Documentation is in doc/.
 
-Development
------------
+=== Development
 
 To create a tarball you must have a recent versions of "help2man" and
 "git2cl".
