@@ -16,13 +16,17 @@ For example:
 
 The content of the various fields are as follows:
 
- * 'counter': 16-bit hex integer, counting upwards on each powerup&touch
+counter::
+ 16-bit hex integer, counting upwards on each powerup&touch
 
- * 'low': 16-bit hex integer, low part of time-stamp of OTP
+low::
+ 16-bit hex integer, low part of time-stamp of OTP
 
- * 'high': 8-bit hex integer, high part of time-stamp of OTP
+high::
+ 8-bit hex integer, high part of time-stamp of OTP
 
- * 'use': 8-bit hex integer, counting upwards on each touch
+use::
+ 8-bit hex integer, counting upwards on each touch
 
 On soft errors, the response will follow this format:
 
