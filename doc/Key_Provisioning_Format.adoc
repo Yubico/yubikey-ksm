@@ -23,90 +23,86 @@ are also treated as comments.
 
 The meaning are as follows:
 
-* serialNr:
-
+serialNr::
  the serial number of the device used for the barcode, decimal integer
 
-* publicName:
-
+publicName::
  encoding of the "external" yubikey prefix, 0-16 modhex characters, typically 12
  modhex encoded data
 
-* internalName:
-
+internalName::
  encoding of the "internal" yubikey identity, always 6 binary bytes = 12 hex,
  hex encoded data
 
-* aesKey:
-
+aesKey::
  an aes key used for the device, length decides whether it is a 128, 192, or 256 bit keys.
  hex encoded data
 
-* lockCode:
-
+lockCode::
  the locking code, always 6 binary bytes = 12 hex,
  hex encoded data
 
-* created:
-
+created::
  timestamp of when the key was created
  for example 2009-02-24T17:41:57 or empty
 
-* accessed:
-
+accessed::
  timestamp of when the key was last accessed
  for example 2009-02-24T17:41:57 or empty
 
-* progflags:
-
+progflags::
  optional field, integer with flags used during personalization
  to enable, e.g., static key mode or cr output
 
 Examples of valid data lines:
 
- 4711,dlcfffckrcde,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,
- 4712,,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40
- 4713,dlcfffckrcdedlcf,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40,0
- 4714,dlcfffckrcdedlcf,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40,4711
+....
+4711,dlcfffckrcde,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,
+4712,,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40
+4713,dlcfffckrcdedlcf,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40,0
+4714,dlcfffckrcdedlcf,ca62baca62ba,ecde18dbe76fbd0c33330f1c354871db,be70aeca62ba,2009-01-22 00:25:11,2009-02-13 00:05:40,4711
+....
 
 Example of actual data using the password 'foobar' (normally it would
 be encrypted to a particular OpenPGP key id):
 
 ....
- -----BEGIN PGP MESSAGE-----
- Version: GnuPG v1.4.9 (GNU/Linux)
- 
- jA0EAwMClfljrWYVfm5gycDMIpZXLnzKtUfeEsqXRp63IdAghBzAfdIt4aeJ2kdV
- x8uvvHKeHfytjEo/U9Wg4NYqYoDnMeb4zXBmrRqWu558ldW75e5R2kPImuQnZIBQ
- 3WKRbElrLpQTlbdyDDAzlOnVLvTrmekZ8ByUrED3tyZKJw7OW5YsHi3z5N+QNFbZ
- hpMWfDBiJRksQEXv3BbiWVojSS+ZlCBiDjqnbIGuk0nZlJSe3F3Jwdz22Y05aU2h
- +2e6vWkqsbvZMVHnU6pauyaM1dh2owXsoHCPLM1fs7ztIh5dAnV9d0TuW4ufKEFQ
- FdH5c4dNgl36CNM8dDlM3c8YpfjxlQ11e6ub7QZC1Eu3gqvfPIvYpczlwjkYOkcH
- nu1Iq42VgUSJzBr36aL9lLySyT8WRizzmJLaGYX/YqKgBXt6RTSO984WsxE6cl80
- paFvFOjybJ2V5GYc7pfdZAM2ySEhnS6PaxYAQXfrEhhtTTCCg1eCqKh4Yamv3u0v
- DAkppMqXeprjpC4cNvrQsVOKGx7HissA5x4rECLC
- =d54w
- -----END PGP MESSAGE-----
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+jA0EAwMClfljrWYVfm5gycDMIpZXLnzKtUfeEsqXRp63IdAghBzAfdIt4aeJ2kdV
+x8uvvHKeHfytjEo/U9Wg4NYqYoDnMeb4zXBmrRqWu558ldW75e5R2kPImuQnZIBQ
+3WKRbElrLpQTlbdyDDAzlOnVLvTrmekZ8ByUrED3tyZKJw7OW5YsHi3z5N+QNFbZ
+hpMWfDBiJRksQEXv3BbiWVojSS+ZlCBiDjqnbIGuk0nZlJSe3F3Jwdz22Y05aU2h
++2e6vWkqsbvZMVHnU6pauyaM1dh2owXsoHCPLM1fs7ztIh5dAnV9d0TuW4ufKEFQ
+FdH5c4dNgl36CNM8dDlM3c8YpfjxlQ11e6ub7QZC1Eu3gqvfPIvYpczlwjkYOkcH
+nu1Iq42VgUSJzBr36aL9lLySyT8WRizzmJLaGYX/YqKgBXt6RTSO984WsxE6cl80
+paFvFOjybJ2V5GYc7pfdZAM2ySEhnS6PaxYAQXfrEhhtTTCCg1eCqKh4Yamv3u0v
+DAkppMqXeprjpC4cNvrQsVOKGx7HissA5x4rECLC
+=d54w
+-----END PGP MESSAGE-----
 ....
 
 Naming Scheme
--------------
+~~~~~~~~~~~~~
 
 The files should use the standard GnuPG output extension '.asc'.
 
 If you want to store many keys in a one-key per file approach, we
 suggest to create files named after the serial number.  For example:
 
- 0.asc
- 1.asc
- 2.asc
- 3.asc
- 4.asc
- 5.asc
- 6.asc
- 7.asc
- 8.asc
- 9.asc
- 10.asc
- 11.asc
- ...
+....
+0.asc
+1.asc
+2.asc
+3.asc
+4.asc
+5.asc
+6.asc
+7.asc
+8.asc
+9.asc
+10.asc
+11.asc
+...
+....

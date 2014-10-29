@@ -5,7 +5,7 @@ The point of this document is to describe all steps required to make a
 proper release of the yubikey-personalization project.
 
 Dependencies
-------------
+~~~~~~~~~~~~
 
 Making a release requires the following packages:
 
@@ -16,7 +16,7 @@ which can be installed (under Ubuntu) by running:
   sudo apt-get install make git gnupg help2man git2cl
 
 Details
--------
+~~~~~~~
 
 * Make sure the version number in Makefile has been incremented.
 
