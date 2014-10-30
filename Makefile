@@ -32,17 +32,17 @@ CODE = .htaccess Makefile NEWS README ykksm-config.php ykksm-db.sql	\
 	ykksm-decrypt.php ykksm-export ykksm-gen-keys	\
 	ykksm-import ykksm-utils.php ykksm-checksum \
 	COPYING BLURB
-DOCS = doc/DecryptionProtocol.txt doc/DesignGoals.txt		\
-	doc/GenerateKeys.txt doc/GenerateKSMKey.txt		\
-	doc/ImportKeysToKSM.txt doc/Installation.txt		\
-	doc/KeyProvisioningFormat.txt doc/ServerHardening.txt	\
-	doc/SyncMonitor.txt
+DOCS = doc/Decryption_Protocol.adoc doc/Design_Goals.adoc		\
+	doc/Generate_Keys.adoc doc/Generate_KSM_Key.adoc		\
+	doc/Import_Keys_To_KSM.adoc doc/Installation.adoc		\
+	doc/Key_Provisioning_Format.adoc doc/Server_Hardening.adoc	\
+	doc/Sync_Monitor.adoc
 MANS = ykksm-checksum.1 ykksm-export.1 ykksm-gen-keys.1		\
 	ykksm-import.1
 
 all:
 	@echo "Try 'make install' or 'make symlink'."
-	@echo "See doc/Installation.txt for more information"
+	@echo "See doc/Installation.adoc for more information"
 	@exit 1
 
 # Installation rules.
