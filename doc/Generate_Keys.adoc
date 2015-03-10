@@ -1,7 +1,7 @@
 Generate Keys
 -------------
 
-To generate some AES keys for your !YubiKeys served via your YK-KSM,
+To generate some AES keys for your YubiKeys served via your YK-KSM,
 you use the 'ykksm-gen-keys' tool.  The tool is useful for generating
 large sets of test keys, for performance testing of the database and
 web interface.  It can also be used to produce keying material that
@@ -55,7 +55,7 @@ user@ksm:~$
 ----
 
 The format is documented in the
-link:Key_Provisioning_format.adoc[Key Provisioning Format] page.
+link:Key_Provisioning_Format.adoc[Key Provisioning Format] page.
 
 To generate many small files each containing just one key, you can use
 a small wrapper like this:
