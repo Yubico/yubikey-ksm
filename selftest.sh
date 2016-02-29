@@ -71,3 +71,30 @@ if [ $? != 0 ]; then
 else
   echo "Success 3"
 fi
+
+echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku', 'format' => 'json');" -F ykksm-decrypt.php | grep -q '^{"counter":"0001","low":"8d40","high":"0f","use":"00"}'
+if [ $? != 0 ]; then
+  echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgku', 'format' => 'json');" -F ykksm-decrypt.php
+  sudo tail /var/log/auth.log
+  exit 1
+else
+  echo "Success 4"
+fi
+
+echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv', 'format' => 'json');" -F ykksm-decrypt.php | grep -q '^{"status":"ERR Corrupt OTP"}'
+if [ $? != 0 ]; then
+  echo '' | php -B "\$_REQUEST = array('otp' => 'idkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv', 'format' => 'json');" -F ykksm-decrypt.php
+  sudo tail /var/log/auth.log
+  exit 1
+else
+  echo "Success 5"
+fi
+
+echo '' | php -B "\$_REQUEST = array('otp' => 'cdkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv', 'format' => 'json');" -F ykksm-decrypt.php | grep -q '^{"status":"ERR Unknown yubikey"}'
+if [ $? != 0 ]; then
+  echo '' | php -B "\$_REQUEST = array('otp' => 'cdkfefrdhtrutjduvtcjbfeuvhehdvjjlbchtlenfgkv', 'format' => 'json');" -F ykksm-decrypt.php
+  sudo tail /var/log/auth.log
+  exit 1
+else
+  echo "Success 6"
+fi
