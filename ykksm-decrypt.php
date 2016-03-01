@@ -33,17 +33,26 @@ require_once 'ykksm-config.php';
 require_once 'ykksm-utils.php';
 ob_end_clean();
 
-function send_response($status_code, $content) {
+if (isset($_SERVER['HTTP_ACCEPT']) && $_SERVER['HTTP_ACCEPT'] == 'application/json') {
+  $format = "json";
+ }
+else {
+  $format = "text";
+}
+
+function send_response($status_code, $content, $format) {
   if (!function_exists('http_response_code')) {
     header("X-PHP-Response-Code: $status_code", true, $status_code);
-  } else {
+   }
+  else {
     http_response_code($status_code);
   }
-  if (isset($_REQUEST["format"]) && $_REQUEST["format"] == "json") {
+  if ($format == "json") {
     $content_type = "application/json";
     if (gettype($content) == "string") { $content = array("status" => rtrim($content)); }
     $content = json_encode($content);
-  } else {
+   }
+  else {
     $content_type = "text/html";
   }
   header("Content-type: $content_type");
@@ -52,18 +61,18 @@ function send_response($status_code, $content) {
 
 
 openlog("ykksm", LOG_PID, $logfacility)
-  or send_response(500, "ERR Syslog open error\n");
+  or send_response(500, "ERR Syslog open error\n", $format);
 
 $otp = $_REQUEST["otp"];
 if (!$otp) {
   syslog(LOG_INFO, "No OTP provided");
-  send_response(400, "ERR No OTP provided\n");
+  send_response(400, "ERR No OTP provided\n", $format);
  }
 
 if (!preg_match("/^([cbdefghijklnrtuv]{0,16})([cbdefghijklnrtuv]{32})$/",
 		$otp, $matches)) {
   syslog(LOG_INFO, "Invalid OTP format: $otp");
-  send_response(400, "ERR Invalid OTP format\n");
+  send_response(400, "ERR Invalid OTP format\n", $format);
  }
 $id = $matches[1];
 $modhex_ciphertext = $matches[2];
@@ -77,7 +86,7 @@ if (!$use_oci) {
     $dbh = new PDO($db_dsn, $db_username, $db_password, $db_options);
    } catch (PDOException $e) {
     syslog(LOG_ERR, "Database error: " . $e->getMessage());
-    send_response(500, "ERR Database error\n");
+    send_response(500, "ERR Database error\n", $format);
    }
  }
 else {
@@ -87,7 +96,7 @@ else {
   if (!$dbh) {
     $error = oci_error();
     syslog(LOG_err, "Database error: " . $error["message"]);
-    send_response(500, "ERR Database error\n");
+    send_response(500, "ERR Database error\n", $format);
    }
  }
 
@@ -100,7 +109,7 @@ if (!$use_oci) {
   if (!$result) {
     syslog(LOG_ERR, "Database query error.  Query: " . $sql . " Error: " .
            print_r ($dbh->errorInfo (), true));
-    send_response(500, "ERR Database error\n");
+    send_response(500, "ERR Database error\n", $format);
    }
 
   $row = $result->fetch(PDO::FETCH_ASSOC);
@@ -116,7 +125,7 @@ else {
     syslog(LOG_ERR, 'Database query error.   Query:  ' . $sql . 'Error: CODE : ' . $error["code"] .
            ' MESSAGE : ' . $error["message"] . ' POSITION : ' . $error["offset"] .
            ' STATEMENT : ' . $error["sqltext"]);
-    send_response(500, "ERR Database error\n");
+    send_response(500, "ERR Database error\n", $format);
    }
 
   $row = oci_fetch_array($result, OCI_ASSOC);
@@ -126,7 +135,7 @@ else {
 
 if (!$aeskey) {
   syslog(LOG_INFO, "Unknown yubikey: " . $otp);
-  send_response(400, "ERR Unknown yubikey\n");
+  send_response(400, "ERR Unknown yubikey\n", $format);
  }
 
 $ciphertext = modhex2hex($modhex_ciphertext);
@@ -135,12 +144,12 @@ $plaintext = aes128ecb_decrypt($aeskey, $ciphertext);
 $uid = substr($plaintext, 0, 12);
 if (strcmp($uid, $internalname) != 0) {
   syslog(LOG_ERR, "UID error: $otp $plaintext: $uid vs $internalname");
-  send_response(400, "ERR Corrupt OTP\n");
+  send_response(400, "ERR Corrupt OTP\n", $format);
  }
 
 if (!crc_is_good($plaintext)) {
   syslog(LOG_ERR, "CRC error: $otp: $plaintext");
-  send_response(400, "ERR Corrupt OTP\n");
+  send_response(400, "ERR Corrupt OTP\n", $format);
  }
 
 # Mask out interesting fields
@@ -152,14 +161,14 @@ $use = substr($plaintext, 22, 2);
 $out = "OK counter=$counter low=$low high=$high use=$use";
 
 syslog(LOG_INFO, "SUCCESS OTP $otp PT $plaintext $out")
-  or send_response(500, "ERR Log error\n");
+  or send_response(500, "ERR Log error\n", $format);
 
-if (isset($_REQUEST['format']) && $_REQUEST['format'] == "json") {
+if ($format == "json") {
   send_response(200, array('counter' => $counter, 'low' => $low,
-                           'high' => $high, 'use' => $use));
+                           'high' => $high, 'use' => $use), $format);
  }
 else {
-  send_response(200, "$out\n");
+  send_response(200, "$out\n", $format);
  }
 
 # Close database connection.
