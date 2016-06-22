@@ -30,13 +30,15 @@ First you should download and install the latest YK-KSM release:
 ----
 user@ksm:~$ sudo apt-get install wget make help2man
 ...
-user@ksm:~$ wget http://yubico.github.com/yubikey-ksm/releases/yubikey-ksm-1.8.tgz
+user@ksm:~$ wget https://developers.yubico.com/yubikey-ksm/Releases/yubikey-ksm-1.15.tgz
+user@ksm:~$ wget https://developers.yubico.com/yubikey-ksm/Releases/yubikey-ksm-1.15.tgz.sig
+user@ksm:~$ gpg --verify yubikey-ksm-1.15.tgz.sig
 ...
-user@ksm:~$ tar xfz yubikey-ksm-1.8.tgz
-user@ksm:~$ cd yubikey-ksm-1.8
-user@ksm:~/yubikey-ksm-1.8$ sudo make install
+user@ksm:~$ tar xfz yubikey-ksm-1.15.tgz
+user@ksm:~$ cd yubikey-ksm-1.15
+user@ksm:~/yubikey-ksm-1.15$ sudo make install
 ...
-user@ksm:~/yubikey-ksm-1.8$
+user@ksm:~/yubikey-ksm-1.15$
 ----
  
 Alternatively, you may also check out YK-KSM from its source code repository.  For example:
