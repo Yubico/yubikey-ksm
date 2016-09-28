@@ -18,5 +18,5 @@ Documentation is in doc/.
 
 === Development
 
-To create a tarball you must have a recent versions of "help2man" and
-"git2cl".
+To create a tarball you must have a recent versions of "help2man",
+"git2cl" and the perl module DBI.
