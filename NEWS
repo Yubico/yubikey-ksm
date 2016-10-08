@@ -1,5 +1,9 @@
 * Version 1.16 (unreleased)
 
+  * Add support for proper HTTP status codes
+
+  * Add support for JSON response
+
 * Version 1.15 (released 2014-09-30)
 
   * Fix boolean SQL portability issue for Oracle.
