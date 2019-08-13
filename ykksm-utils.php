@@ -31,35 +31,44 @@
 function yubi_hex2bin($h)
 {
   if (!is_string($h)) return null;
-  $r='';
-  for ($a=0; $a<strlen($h); $a+=2) {
-    $r.=chr(hexdec($h{$a}.$h{($a+1)}));
+  $r = '';
+  for ($a = 0; $a < strlen($h); $a += 2) {
+    $r .= chr(hexdec($h{
+    $a} . $h{
+    ($a + 1)}));
   }
   return $r;
 }
 
 function modhex2hex($m)
 {
-  return strtr ($m, "cbdefghijklnrtuv", "0123456789abcdef");
+  return strtr($m, "cbdefghijklnrtuv", "0123456789abcdef");
 }
 
-function aes128ecb_decrypt($key,$in)
+function aes128ecb_decrypt($key, $in)
 {
-  $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'ecb', '');
-  $iv = yubi_hex2bin('00000000000000000000000000000000');
-  mcrypt_generic_init($td, yubi_hex2bin($key), $iv);
-  $result = bin2hex(mdecrypt_generic($td, yubi_hex2bin($in)));
-  mcrypt_generic_deinit($td);
-
+  if (extension_loaded('openssl') && function_exists('openssl_decrypt') && in_array('aes-128-ecb', openssl_get_cipher_methods())) {
+    $result = openssl_decrypt(yubi_hex2bin($in), 'aes-128-ecb', yubi_hex2bin($key), OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING);
+    if ($result !== false)
+      $result = bin2hex($result);
+    else
+      $result = '';
+  } else {
+    $td = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'ecb', '');
+    $iv = yubi_hex2bin('00000000000000000000000000000000');
+    mcrypt_generic_init($td, yubi_hex2bin($key), $iv);
+    $result = bin2hex(mdecrypt_generic($td, yubi_hex2bin($in)));
+    mcrypt_generic_deinit($td);
+  }
   return $result;
 }
-	
+
 function calculate_crc($token)
 {
   $crc = 0xffff;
 
-  for ($i = 0; $i < 16; $i++ ) {
-    $b = hexdec($token[$i*2].$token[($i*2)+1]);
+  for ($i = 0; $i < 16; $i++) {
+    $b = hexdec($token[$i * 2] . $token[($i * 2) + 1]);
     $crc = $crc ^ ($b & 0xff);
     for ($j = 0; $j < 8; $j++) {
       $n = $crc & 1;
@@ -72,9 +81,8 @@ function calculate_crc($token)
   return $crc;
 }
 
-function crc_is_good($token) {
+function crc_is_good($token)
+{
   $crc = calculate_crc($token);
   return $crc == 0xf0b8;
 }
-
-?>
